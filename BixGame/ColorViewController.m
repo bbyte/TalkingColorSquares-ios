@@ -44,7 +44,9 @@
     black.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor blackColor] CGColor]];
 
     blue = [CAGradientLayer layer];
-    blue.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor blueColor] CGColor]];
+//    blue.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor blueColor] CGColor]];
+    blue.colors = @[(id)[[UIColor colorWithRed: 30/255.0f green: 142/255.0f blue: 253/255.0f alpha: 1] CGColor],
+                    (id)[[UIColor colorWithRed: 18/255.0f green: 87/255.0f blue: 155/255.0f alpha: 1] CGColor]];
     
     brown = [CAGradientLayer layer];
     brown.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor brownColor] CGColor]];
@@ -56,10 +58,14 @@
     green.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor greenColor] CGColor], (id)[[UIColor blackColor] CGColor]];
     
     pink = [CAGradientLayer layer];
-    pink.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor purpleColor] CGColor]];
+//    pink.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor purpleColor] CGColor]];
+    pink.colors = @[(id)[[UIColor colorWithRed: 247/255.0f green: 120/255.0f blue: 160/255.0f alpha: 1] CGColor],
+                    (id)[[UIColor colorWithRed: 247/255.0f green: 120/255.0f blue: 160/255.0f alpha: 1] CGColor]];
     
     red = [CAGradientLayer layer];
-    red.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor redColor] CGColor]];
+//    red.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor redColor] CGColor]];
+    red.colors = @[(id)[[UIColor colorWithRed: 215/255.0f green: 49/255.0f blue: 49/255.0f alpha: 1] CGColor],
+                   (id)[[UIColor colorWithRed: 205/255.0f green: 2/255.0f blue: 2/255.0f alpha: 1] CGColor]];
     
     white = [CAGradientLayer layer];
     white.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor whiteColor] CGColor]];
