@@ -13,6 +13,7 @@
 
 
 #define randrange(N) rand() / (RAND_MAX/(N) + 1)
+#define DEFAULT_UILOCKTIME 1.5f
 
 @interface ColorViewController ()
 
@@ -21,6 +22,9 @@
 @implementation ColorViewController
 
 @synthesize buttons, selectButton, colors, numbers, mode, selectClickCounter;
+@synthesize lockView;
+@synthesize randomButton, notaButton;
+@synthesize recognizer, recognizer1;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -35,11 +39,16 @@
     CAGradientLayer *orange, *yellow, *black, *blue, *brown, *gray, *green, *pink, *red, *white;
     
     orange = [CAGradientLayer layer];
-    orange.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor orangeColor] CGColor]];
-
+//    orange.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor orangeColor] CGColor]];
+    orange.colors = @[(id)[[UIColor colorWithRed: 255/255.0f green: 128/255.0f blue: 0/255.0f alpha: 1] CGColor],
+                      (id)[[UIColor colorWithRed: 255/255.0f green: 128/255.0f blue: 0/255.0f alpha: 1] CGColor]];
+    
     yellow = [CAGradientLayer layer];
-    yellow.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor yellowColor] CGColor], (id)[[UIColor yellowColor] CGColor], (id)[[UIColor yellowColor] CGColor]];
+//    yellow.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor yellowColor] CGColor], (id)[[UIColor yellowColor] CGColor], (id)[[UIColor yellowColor] CGColor]];
 
+    yellow.colors = @[(id)[[UIColor colorWithRed: 255/255.0f green: 221/255.0f blue: 24/255.0f alpha: 1] CGColor],
+                      (id)[[UIColor colorWithRed: 255/255.0f green: 217/255.0f blue: 1/255.0f alpha: 1] CGColor]];
+    
     black = [CAGradientLayer layer];
     black.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor blackColor] CGColor]];
 
@@ -49,13 +58,22 @@
                     (id)[[UIColor colorWithRed: 18/255.0f green: 87/255.0f blue: 155/255.0f alpha: 1] CGColor]];
     
     brown = [CAGradientLayer layer];
-    brown.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor brownColor] CGColor]];
+//    brown.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor brownColor] CGColor]];
+    brown.colors = @[(id)[[UIColor colorWithRed: 116/255.0f green: 85/255.0f blue: 54/255.0f alpha: 1] CGColor],
+                     (id)[[UIColor colorWithRed: 101/255.0f green: 68/255.0f blue: 34/255.0f alpha: 1] CGColor]];
+    
     
     gray = [CAGradientLayer layer];
-    gray.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor grayColor] CGColor]];
+//    gray.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor grayColor] CGColor]];
+    gray.colors = @[(id)[[UIColor colorWithRed: 117/255.0f green: 117/255.0f blue: 117/255.0f alpha: 1] CGColor],
+                    (id)[[UIColor colorWithRed: 102/255.0f green: 102/255.0f blue: 102/255.0f alpha: 1] CGColor]];
+    
     
     green = [CAGradientLayer layer];
-    green.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor greenColor] CGColor], (id)[[UIColor blackColor] CGColor]];
+//    green.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor greenColor] CGColor], (id)[[UIColor blackColor] CGColor]];
+    green.colors = @[(id)[[UIColor colorWithRed: 100/255.0f green: 176/255.0f blue: 78/255.0f alpha:1 ] CGColor],
+                     (id)[[UIColor colorWithRed: 85/255.0f green: 168/255.0f blue: 60/255.0f alpha: 1] CGColor]];
+    
     
     pink = [CAGradientLayer layer];
 //    pink.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor purpleColor] CGColor]];
@@ -68,10 +86,13 @@
                    (id)[[UIColor colorWithRed: 205/255.0f green: 2/255.0f blue: 2/255.0f alpha: 1] CGColor]];
     
     white = [CAGradientLayer layer];
-    white.colors = @[(id)[[UIColor blackColor] CGColor], (id)[[UIColor whiteColor] CGColor]];
+    white.colors = @[(id)[[UIColor whiteColor] CGColor],(id)[[UIColor whiteColor] CGColor]];
 
-    colors = [[NSDictionary alloc] initWithObjects: @[orange, yellow, black, blue, brown, gray, green, pink, red, white]
-                                           forKeys: @[@"Orange", @"Yellow", @"Black", @"Blue", @"Brown", @"Gray", @"Green", @"Pink", @"Red", @"White"]];
+    colors = [[NSDictionary alloc] initWithObjects: @[blue,     yellow,   green,    orange,    black,    white,      brown, pink, gray, red]
+                                           forKeys: @[@"Blue", @"Yellow", @"Green", @"Orange", @"Black", @"White", @"Brown", @"Pink", @"Gray", @"Red"]];
+    
+    self.colorArrange = @[@"Blue", @"Yellow", @"Green", @"Orange", @"Black", @"White", @"Brown", @"Pink", @"Gray", @"Red"];
+    
     // mode:
     // 1 for numbers
     // 2 for colors
@@ -80,35 +101,65 @@
     self.selectClickCounter = 0;
     [self playMP3File: @"hello"];
     
+    self.lockView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
+    
+    self.isRandom = NO;
   }
   return self;
 }
 
 - (void) initColors
 {
-  int a[10], i, nvalues = 10;
-  
-	for(i = 0; i < nvalues; i++)
-		a[i] = i + 1;
-  
-	for(i = 0; i < nvalues-1; i++) {
-		int c = randrange(nvalues-i);
-		int t = a[i]; a[i] = a[i+c]; a[i+c] = t;	/* swap */
-	}
-  
-  
   for (UIButton *button in buttons) {
     for (UIView *subView in [button subviews]) {
       [subView removeFromSuperview];
     }
   }
   
+  int a[10], i, nvalues = 10;
+
+  if (self.isRandom) {
+     
+    // random code
+    
+    for(i = 0; i < nvalues; i++)
+      a[i] = i + 1;
+    
+    for(i = 0; i < nvalues-1; i++) {
+      int c = randrange(nvalues-i);
+      int t = a[i]; a[i] = a[i+c]; a[i+c] = t;	/* swap */
+    }
+
+  } else {
+    
+    for(i = 0; i < nvalues; i++){
+      
+      a[i] = i + 1;
+    }
+  }
+  
+  
+  
   i = 0;
 
-  for (NSString *gradientType in [colors allKeys]) {
+//  for (NSString *gradientType in [colors allKeys]) {
+  
+  for (int j = 0; j < [self.colorArrange count]; j++) {
+  
+    NSString *gradientType = [self.colorArrange objectAtIndex: j];
     
     UIButton *cButton = (UIButton *)self.buttons[a[i] - 1];
     CAGradientLayer *gradient = [colors objectForKey: gradientType];
+    
+    UIImageView *strokeImage = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"stroke"]];
+    
+//    UIImage *strokeImage = [UIImage imageNamed: @"stroke"];
+    
+//    [cButton setBackgroundImage: strokeImage forState: UIControlStateNormal];
+    
+    [cButton addSubview: strokeImage];
+    
+    NSLog(@"%@", gradientType);
     
     if (self.mode == 1){
       
@@ -142,6 +193,17 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view from its nib.
   
+//  UISwipeGestureRecognizer *recognizer;
+  recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(selectButtonClicked:)];
+  [recognizer setDirection:UISwipeGestureRecognizerDirectionRight];
+  [[self view] addGestureRecognizer:recognizer];
+
+//  UISwipeGestureRecognizer *recognizer1;
+  recognizer1 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(selectButtonClicked:)];
+  [recognizer1 setDirection:UISwipeGestureRecognizerDirectionLeft];
+  [[self view] addGestureRecognizer:recognizer1];
+  
+  
   [self.selectButton setImage: [UIImage imageNamed: [NSString stringWithFormat: @"game-%d", self.mode]]
                      forState: UIControlStateNormal];
 
@@ -151,10 +213,21 @@
 
 - (IBAction) buttonClicked:(id)sender
 {
+ 
+  [self lockUI];;
+  int64_t delayInSeconds = DEFAULT_UILOCKTIME;
+  dispatch_time_t updateTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+  dispatch_after(updateTime, dispatch_get_main_queue(), ^(void){
+    
+    [self releaseUILock];
+  });
+
+  
+  AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
   if (self.mode == 1) {
     
   
-  [self playMP3File: [NSString stringWithFormat: @"%d", [sender tag]]];
+    [self playMP3File: [NSString stringWithFormat: @"%d", [sender tag]]];
 
   } else {
     
@@ -172,36 +245,44 @@
 - (IBAction) selectButtonClicked:(id)sender
 {
   
-  if (self.selectClickCounter < 3) {
+//  if (self.selectClickCounter < 3) {
   
     switch (self.mode) {
       case 1:
         [self.selectButton setImage: [UIImage imageNamed: @"game-2"] forState: UIControlStateNormal];
         self.mode = 2;
         
+        notaButton.hidden = YES;
+//        randomButton.hidden = YES;
+        
         break;
         
       case 2:
         [self.selectButton setImage: [UIImage imageNamed: @"game-1"] forState: UIControlStateNormal];
         self.mode = 1;
+
+        notaButton.hidden = NO;
+//        randomButton.hidden = NO;
         break;
         
       default:
         break;
     }
-    
+  
+  self.isRandom = NO;
+  
     [UIView transitionWithView: self.view
                       duration: 1.0
                        options: UIViewAnimationOptionTransitionFlipFromLeft
                     animations: ^(void) { [self playMP3File: [NSString stringWithFormat: @"%d-voice", self.mode]]; [self initColors]; }
                     completion: nil];
   
-    self.selectClickCounter++;
-  } else {
-    
-    [self playMP3File: @"numbers-song"];
-    self.selectClickCounter = 0;
-  }
+//    self.selectClickCounter++;
+//  } else {
+//    
+//    [self playMP3File: @"numbers-song"];
+//    self.selectClickCounter = 0;
+//  }
 }
 
 
@@ -234,6 +315,38 @@
 	AudioServicesPlaySystemSound(soundID);
 }
 
+- (void) lockUI
+{
+  [self.view addSubview: lockView];
+  
+  [self.view removeGestureRecognizer: recognizer];
+  [self.view removeGestureRecognizer: recognizer1];  
+}
+
+- (void) releaseUILock
+{
+  [self.lockView removeFromSuperview];
+  [[self view] addGestureRecognizer:recognizer];
+  [[self view] addGestureRecognizer:recognizer1];
+}
+
+- (IBAction) notaButtonClicked:(id)sender
+{
+  [self playMP3File: @"numbers-song"];
+  [self lockUI];;
+  int64_t delayInSeconds = 10.0f;
+  dispatch_time_t updateTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+  dispatch_after(updateTime, dispatch_get_main_queue(), ^(void){
+    
+    [self releaseUILock];
+  });
+}
+
+- (IBAction) randomButtonClicked:(id)sender
+{
+  self.isRandom = self.isRandom ? NO : YES;
+  [self initColors];
+}
 
 - (void)didReceiveMemoryWarning
 {

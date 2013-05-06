@@ -11,16 +11,28 @@
 @interface ColorViewController : UIViewController
 
 @property (retain, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
-@property (retain, nonatomic) IBOutlet UIButton *selectButton;
+@property (retain, nonatomic) IBOutlet UIButton *selectButton, *notaButton, *randomButton;
 @property (retain, nonatomic) NSDictionary *colors, *numbers;
 @property (assign, nonatomic) int mode;
 @property (assign, nonatomic) int selectClickCounter;
+@property (retain, nonatomic) UIView *lockView;
+@property (assign, nonatomic) BOOL isRandom;
+@property (retain, nonatomic) NSArray *colorArrange;
+
+@property (retain, nonatomic) UISwipeGestureRecognizer *recognizer, *recognizer1;
 
 
 - (IBAction) buttonClicked:(id)sender;
 - (IBAction) selectButtonClicked:(id)sender;
 
+- (IBAction) notaButtonClicked:(id)sender;
+- (IBAction) randomButtonClicked:(id)sender;
+
+
 - (NSString *)mp3File: (NSString *) number;
 - (void) playMP3File: (NSString *) number;
+
+- (void) lockUI;
+- (void) releaseUILock;
 
 @end

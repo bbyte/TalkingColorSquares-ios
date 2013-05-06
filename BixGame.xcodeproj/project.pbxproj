@@ -49,6 +49,7 @@
 		88B8EEEB173589EF00AAD8F4 /* UIButtonExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B8EEEA173589EE00AAD8F4 /* UIButtonExtras.m */; };
 		88B8EEED1737067D00AAD8F4 /* game-1_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B8EEEC1737067D00AAD8F4 /* game-1_icon.png */; };
 		88B8EEEF173706BD00AAD8F4 /* game-1_icon_retina.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B8EEEE173706BD00AAD8F4 /* game-1_icon_retina.png */; };
+		88B8EEF2173829AA00AAD8F4 /* stroke.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B8EEF1173829AA00AAD8F4 /* stroke.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +101,7 @@
 		88B8EEEA173589EE00AAD8F4 /* UIButtonExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIButtonExtras.m; path = ../UIButtonExtras.m; sourceTree = "<group>"; };
 		88B8EEEC1737067D00AAD8F4 /* game-1_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "game-1_icon.png"; path = "../game-1_icon.png"; sourceTree = "<group>"; };
 		88B8EEEE173706BD00AAD8F4 /* game-1_icon_retina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "game-1_icon_retina.png"; path = "../game-1_icon_retina.png"; sourceTree = "<group>"; };
+		88B8EEF1173829AA00AAD8F4 /* stroke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stroke.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +167,7 @@
 		887976D9173441ED00935E17 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				88B8EEF1173829AA00AAD8F4 /* stroke.png */,
 				88B8EEEE173706BD00AAD8F4 /* game-1_icon_retina.png */,
 				88B8EEEC1737067D00AAD8F4 /* game-1_icon.png */,
 				88B8EEB317357F0500AAD8F4 /* game-1.png */,
@@ -296,6 +299,7 @@
 				88B8EEE81735896E00AAD8F4 /* Yellow.mp3 in Resources */,
 				88B8EEED1737067D00AAD8F4 /* game-1_icon.png in Resources */,
 				88B8EEEF173706BD00AAD8F4 /* game-1_icon_retina.png in Resources */,
+				88B8EEF2173829AA00AAD8F4 /* stroke.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
