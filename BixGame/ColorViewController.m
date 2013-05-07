@@ -25,6 +25,7 @@
 @synthesize lockView;
 @synthesize randomButton, notaButton;
 @synthesize recognizer, recognizer1;
+@synthesize bumpAnimation;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -104,6 +105,12 @@
     self.lockView = [[UIView alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
     
     self.isRandom = NO;
+    
+    self.bumpAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+    bumpAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.0, 1.0, 1.0)];
+    bumpAnimation.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2f, 1.2f, 1.2f)];
+    bumpAnimation.duration = .3f;
+    bumpAnimation.autoreverses = YES;
   }
   return self;
 }
@@ -138,28 +145,44 @@
     }
   }
   
-  
-  
-  i = 0;
 
 //  for (NSString *gradientType in [colors allKeys]) {
   
-  for (int j = 0; j < [self.colorArrange count]; j++) {
+  for (int i = 0; i < [self.colorArrange count]; i++) {
   
-    NSString *gradientType = [self.colorArrange objectAtIndex: j];
+    NSString *gradientType = [self.colorArrange objectAtIndex: i];
     
     UIButton *cButton = (UIButton *)self.buttons[a[i] - 1];
     CAGradientLayer *gradient = [colors objectForKey: gradientType];
     
-    UIImageView *strokeImage = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"stroke"]];
+    UIImageView *strokeImageView;
     
-//    UIImage *strokeImage = [UIImage imageNamed: @"stroke"];
     
-//    [cButton setBackgroundImage: strokeImage forState: UIControlStateNormal];
+    [UIView transitionWithView: cButton
+                      duration: 1.0
+                       options: UIViewAnimationOptionTransitionFlipFromLeft
+                    animations: nil
+                    completion: NULL];
     
-    [cButton addSubview: strokeImage];
+    if ([gradientType isEqualToString: @"White"]) {
+      if ((a[i] - 1) < 9) {
+        
+        strokeImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"Dots-105x91-black"]];
+      } else {
+        
+        strokeImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"Dots-213x91-black"]];
+      }
+    } else {
+      if ((a[i] - 1) < 9) {
+        
+        strokeImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"Dots-105x91-white"]];
+      } else {
+        
+        strokeImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"Dots-213x91-white"]];
+      }
+    }
     
-    NSLog(@"%@", gradientType);
+    [cButton addSubview: strokeImageView];
     
     if (self.mode == 1){
       
@@ -183,8 +206,7 @@
     
     cButton.tag = i + 1;
     cButton.cColor = gradientType;
-    
-    i++;
+
   }
 }
 
@@ -244,45 +266,35 @@
 
 - (IBAction) selectButtonClicked:(id)sender
 {
-  
-//  if (self.selectClickCounter < 3) {
-  
-    switch (self.mode) {
-      case 1:
-        [self.selectButton setImage: [UIImage imageNamed: @"game-2"] forState: UIControlStateNormal];
-        self.mode = 2;
-        
-        notaButton.hidden = YES;
+  switch (self.mode) {
+    case 1:
+      [self.selectButton setImage: [UIImage imageNamed: @"game-2"] forState: UIControlStateNormal];
+      self.mode = 2;
+      
+      notaButton.hidden = YES;
 //        randomButton.hidden = YES;
-        
-        break;
-        
-      case 2:
-        [self.selectButton setImage: [UIImage imageNamed: @"game-1"] forState: UIControlStateNormal];
-        self.mode = 1;
+      
+      break;
+      
+    case 2:
+      [self.selectButton setImage: [UIImage imageNamed: @"game-1"] forState: UIControlStateNormal];
+      self.mode = 1;
 
-        notaButton.hidden = NO;
+      notaButton.hidden = NO;
 //        randomButton.hidden = NO;
-        break;
-        
-      default:
-        break;
-    }
+      break;
+      
+    default:
+      break;
+  }
   
   self.isRandom = NO;
   
-    [UIView transitionWithView: self.view
-                      duration: 1.0
-                       options: UIViewAnimationOptionTransitionFlipFromLeft
-                    animations: ^(void) { [self playMP3File: [NSString stringWithFormat: @"%d-voice", self.mode]]; [self initColors]; }
-                    completion: nil];
-  
-//    self.selectClickCounter++;
-//  } else {
-//    
-//    [self playMP3File: @"numbers-song"];
-//    self.selectClickCounter = 0;
-//  }
+  [UIView transitionWithView: self.view
+                    duration: 1.0
+                     options: ([sender direction] != UISwipeGestureRecognizerDirectionLeft ? UIViewAnimationOptionTransitionFlipFromLeft : UIViewAnimationOptionTransitionFlipFromRight)
+                  animations: ^(void) { [self playMP3File: [NSString stringWithFormat: @"%d-voice", self.mode]]; [self initColors]; }
+                  completion: nil];  
 }
 
 
@@ -333,19 +345,109 @@
 - (IBAction) notaButtonClicked:(id)sender
 {
   [self playMP3File: @"numbers-song"];
-  [self lockUI];;
+  [self lockUI];
   int64_t delayInSeconds = 10.0f;
   dispatch_time_t updateTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
   dispatch_after(updateTime, dispatch_get_main_queue(), ^(void){
     
     [self releaseUILock];
   });
+  
+
+  
+  dispatch_time_t updateTimeA;
+  
+  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 0.0f * NSEC_PER_SEC);
+  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+    
+    [[[self getButtonByNumber: 1] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+    NSLog(@"delay: %d", 1);
+  });
+
+
+  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC);
+  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+    
+    [[[self getButtonByNumber: 2] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+    NSLog(@"delay: %d", 2);
+  });
+
+  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 1.5f * NSEC_PER_SEC);
+  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+    
+    [[[self getButtonByNumber: 3] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+    NSLog(@"delay: %d", 3);
+  });
+
+  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 2.8f * NSEC_PER_SEC);
+  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+    
+    [[[self getButtonByNumber: 4] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+    NSLog(@"delay: %d", 4);
+  });
+
+  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 3.5f * NSEC_PER_SEC);
+  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+    
+    [[[self getButtonByNumber: 5] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+    NSLog(@"delay: %d", 5);
+  });
+
+  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 4.2f * NSEC_PER_SEC);
+  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+    
+    [[[self getButtonByNumber: 6] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+    NSLog(@"delay: %d", 6);
+  });
+
+  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC);
+  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+    
+    [[[self getButtonByNumber: 7] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+    NSLog(@"delay: %d", 7);
+  });
+
+  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 6 * NSEC_PER_SEC);
+  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+    
+    [[[self getButtonByNumber: 8] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+    NSLog(@"delay: %d", 8);
+  });
+
+  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 7 * NSEC_PER_SEC);
+  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+    
+    [[[self getButtonByNumber: 9] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+    NSLog(@"delay: %d", 9);
+  });
+
+  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 8 * NSEC_PER_SEC);
+  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+    
+    [[[self getButtonByNumber: 10] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+    NSLog(@"delay: %d", 10);
+  });
+
 }
 
 - (IBAction) randomButtonClicked:(id)sender
 {
   self.isRandom = self.isRandom ? NO : YES;
   [self initColors];
+}
+
+- (UIButton *) getButtonByNumber:(int)number
+{
+  for (UIButton *button in buttons) {
+    
+    if (button.tag == number) {
+    
+      return button;
+    }
+  }
+                   
+  NSLog(@"Not found button number: %d", number);
+  return NO;
 }
 
 - (void)didReceiveMemoryWarning

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface ColorViewController : UIViewController
 
@@ -20,6 +21,8 @@
 @property (retain, nonatomic) NSArray *colorArrange;
 
 @property (retain, nonatomic) UISwipeGestureRecognizer *recognizer, *recognizer1;
+@property (retain, nonatomic) CABasicAnimation *bumpAnimation;
+
 
 
 - (IBAction) buttonClicked:(id)sender;

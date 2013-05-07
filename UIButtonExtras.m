@@ -7,6 +7,7 @@ static char UIB_PROPERTY_KEY;
 
 @dynamic cColor;
 
+
 -(void)setCColor:(NSObject *)property
 {
   objc_setAssociatedObject(self, &UIB_PROPERTY_KEY, property, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -16,8 +17,6 @@ static char UIB_PROPERTY_KEY;
 {
   return (NSObject*)objc_getAssociatedObject(self, &UIB_PROPERTY_KEY);
 }
-
-
 
 
 @end
