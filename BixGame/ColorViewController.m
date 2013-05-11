@@ -14,6 +14,10 @@
 
 #define randrange(N) rand() / (RAND_MAX/(N) + 1)
 #define DEFAULT_UILOCKTIME 1.5f
+#define MODE_NUMBERS 1 
+#define MODE_COLORS 2 
+#define MODE_MORENUMBERS 3 
+#define MODE_SHAPES 4
 
 @interface ColorViewController ()
 
@@ -26,6 +30,7 @@
 @synthesize randomButton, notaButton;
 @synthesize recognizer, recognizer1;
 @synthesize bumpAnimation;
+@synthesize buyButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -111,6 +116,7 @@
     bumpAnimation.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(1.2f, 1.2f, 1.2f)];
     bumpAnimation.duration = .3f;
     bumpAnimation.autoreverses = YES;
+    
   }
   return self;
 }
@@ -184,19 +190,62 @@
     
     [cButton addSubview: strokeImageView];
     
+    UILabel *buttonLabel;
+    
+    switch (self.mode) {
+      case MODE_COLORS:
+        
+        // empty cells
+        break;
+        
+      case MODE_NUMBERS:
+        
+        buttonLabel = [[UILabel alloc] initWithFrame: cButton.bounds];
+        buttonLabel.textAlignment = UITextAlignmentCenter;
+        buttonLabel.font = [UIFont boldSystemFontOfSize: 48];
+        buttonLabel.text = [NSString stringWithFormat: @"%d", i + 1];
+        if ([gradientType isEqualToString: @"White"]) {
+          buttonLabel.textColor = [UIColor blackColor];
+        } else {
+          buttonLabel.textColor = [UIColor whiteColor];
+        }
+        buttonLabel.backgroundColor = [UIColor clearColor];
+        [cButton addSubview: buttonLabel];
+        
+        cButton.tag = i + 1;
+        
+        break;
+        
+      case MODE_MORENUMBERS:
+
+        buttonLabel = [[UILabel alloc] initWithFrame: cButton.bounds];
+        buttonLabel.textAlignment = UITextAlignmentCenter;
+        buttonLabel.font = [UIFont boldSystemFontOfSize: 48];
+        buttonLabel.text = [NSString stringWithFormat: @"%d", i + 1 + 10];
+        if ([gradientType isEqualToString: @"White"]) {
+          buttonLabel.textColor = [UIColor blackColor];
+        } else {
+          buttonLabel.textColor = [UIColor whiteColor];
+        }
+        buttonLabel.backgroundColor = [UIColor clearColor];
+        [cButton addSubview: buttonLabel];
+
+        cButton.tag = i + 1 + 10;
+
+        break;
+        
+      case MODE_SHAPES:
+        
+        
+        
+        break;
+        
+      default:
+        break;
+    }
+    
     if (self.mode == 1){
       
-      UILabel *number = [[UILabel alloc] initWithFrame: cButton.bounds];
-      number.textAlignment = UITextAlignmentCenter;
-      number.font = [UIFont boldSystemFontOfSize: 48];
-      number.text = [NSString stringWithFormat: @"%d", i + 1];
-      if ([gradientType isEqualToString: @"White"]) {
-        number.textColor = [UIColor blackColor];
-      } else {
-        number.textColor = [UIColor whiteColor];
-      }
-      number.backgroundColor = [UIColor clearColor];
-      [cButton addSubview: number];
     }
       
     gradient.frame = cButton.bounds;
@@ -204,7 +253,6 @@
     [[cButton layer] setCornerRadius: 8.0f];
     [[cButton layer] setMasksToBounds: YES];
     
-    cButton.tag = i + 1;
     cButton.cColor = gradientType;
 
   }
@@ -215,13 +263,16 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view from its nib.
   
+  [self.buyButton setImage: [UIImage imageNamed: @"Buy-button"] forState: UIControlStateNormal];
+
+  
 //  UISwipeGestureRecognizer *recognizer;
-  recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(selectButtonClicked:)];
+  recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeDetect:)];
   [recognizer setDirection:UISwipeGestureRecognizerDirectionRight];
   [[self view] addGestureRecognizer:recognizer];
 
 //  UISwipeGestureRecognizer *recognizer1;
-  recognizer1 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(selectButtonClicked:)];
+  recognizer1 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeDetect:)];
   [recognizer1 setDirection:UISwipeGestureRecognizerDirectionLeft];
   [[self view] addGestureRecognizer:recognizer1];
   
@@ -231,12 +282,54 @@
 
   
   [self initColors];
+  
+  if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"splashShowed"]){
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Здрасти"
+                                                    message: @"Това е един много дълъг текст,\nс много блаблабла\n, който е изключително безмислен,\nно трябва да го има!"
+                                                   delegate: self
+                                          cancelButtonTitle: @"Играй!"
+                                          otherButtonTitles: nil];
+    [alert show];
+    
+    
+    [[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"splashShowed"];
+  }
 }
 
 - (IBAction) buttonClicked:(id)sender
 {
- 
-  [self lockUI];;
+  switch (self.mode) {
+    case MODE_MORENUMBERS:
+      if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"moreNumbersPaid"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Платено!"
+                                                        message: @"Тази част е пластена!\nАко искате да чуете и другите глупости,\nси я купете!"
+                                                       delegate: self
+                                              cancelButtonTitle: @"Не сега"
+                                              otherButtonTitles: @"Купи пакет с числа 11-20 за 56.34лв", @"Купи пакет с числа 11-20 и фигури за 256.18лв", nil];
+        [alert show];
+        return;
+      }
+      
+      break;
+      
+    case MODE_SHAPES:
+      if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"moreNumbersPaid"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Платено!"
+                                                        message: @"Тази част е пластена!\nАко искате да чуете и другите глупости,\nси я купете!"
+                                                       delegate: self
+                                              cancelButtonTitle: @"Не сега"
+                                              otherButtonTitles: @"Купи пакет с фигурки за 156.34лв", @"Купи пакет с числа 11-20 и фигури за 256.18лв", nil];
+        [alert show];
+        
+        return;
+      }
+      break;
+    default:
+      break;
+  }
+  
+  [self lockUI];
   int64_t delayInSeconds = DEFAULT_UILOCKTIME;
   dispatch_time_t updateTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
   dispatch_after(updateTime, dispatch_get_main_queue(), ^(void){
@@ -244,7 +337,6 @@
     [self releaseUILock];
   });
 
-  
   AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
   if (self.mode == 1) {
     
@@ -264,24 +356,53 @@
 
 }
 
-- (IBAction) selectButtonClicked:(id)sender
+- (void) selectMode: (int) newMode
 {
-  switch (self.mode) {
-    case 1:
-      [self.selectButton setImage: [UIImage imageNamed: @"game-2"] forState: UIControlStateNormal];
-      self.mode = 2;
+  switch (newMode) {
+    case MODE_NUMBERS:
+      [self.selectButton setImage: [UIImage imageNamed: @"game-1"] forState: UIControlStateNormal];
+      self.mode = newMode;
       
-      notaButton.hidden = YES;
-//        randomButton.hidden = YES;
+      notaButton.hidden = NO;
+      //        randomButton.hidden = YES;
+      
+      [self.buyButton setImage: [UIImage imageNamed: @"Buy-button"] forState: UIControlStateNormal];
       
       break;
       
-    case 2:
-      [self.selectButton setImage: [UIImage imageNamed: @"game-1"] forState: UIControlStateNormal];
-      self.mode = 1;
+    case MODE_COLORS:
+      [self.selectButton setImage: [UIImage imageNamed: @"game-2"] forState: UIControlStateNormal];
+      self.mode = newMode;
+      
+      notaButton.hidden = YES;
+      //        randomButton.hidden = NO;
+      
+      [self.buyButton setImage: [UIImage imageNamed: @"Buy-Shapes"] forState: UIControlStateNormal];
+      
+      break;
+      
+    case MODE_MORENUMBERS:
 
+      [self.selectButton setImage: [UIImage imageNamed: @"game-1"] forState: UIControlStateNormal];
+      self.mode = newMode;
+      
       notaButton.hidden = NO;
-//        randomButton.hidden = NO;
+      //        randomButton.hidden = NO;
+      
+      [self.buyButton setImage: [UIImage imageNamed: @""] forState: UIControlStateNormal];
+
+      break;
+      
+    case MODE_SHAPES:
+
+      [self.selectButton setImage: [UIImage imageNamed: @"game-2"] forState: UIControlStateNormal];
+      self.mode = newMode;
+      
+      notaButton.hidden = YES;
+      //        randomButton.hidden = NO;
+      
+      [self.buyButton setImage: [UIImage imageNamed: @""] forState: UIControlStateNormal];
+
       break;
       
     default:
@@ -289,12 +410,92 @@
   }
   
   self.isRandom = NO;
+
+}
+
+- (void) swipeDetect: (id) sender
+{
+
+  NSLog(@"%d", self.mode);
+  
+  switch (self.mode) {
+    case MODE_NUMBERS:
+      
+      [self selectMode: MODE_MORENUMBERS];
+      
+      break;
+      
+    case MODE_MORENUMBERS:
+      
+      [self selectMode: MODE_NUMBERS];
+      
+      break;
+      
+    case MODE_COLORS:
+      
+      [self selectMode: MODE_SHAPES];
+      
+      break;
+      
+    case MODE_SHAPES:
+      
+      [self selectMode: MODE_COLORS];
+      
+    default:
+      break;
+  }
+
+  UIViewAnimationOptions animationDirection;
+  
+  NSLog(@"Direction: %d %d %d", [sender direction],UISwipeGestureRecognizerDirectionLeft, UISwipeGestureRecognizerDirectionRight );
+
+  animationDirection = ([sender direction] != UISwipeGestureRecognizerDirectionLeft ? UIViewAnimationOptionTransitionFlipFromLeft : UIViewAnimationOptionTransitionFlipFromRight);
+  [self showTransition: animationDirection];
+}
+
+- (void) showTransition: (UIViewAnimationOptions) direction
+{
+//  if ([sender respondsToSelector: @selector(direction)]) {
+//    
+//    direction = ([sender direction] != UISwipeGestureRecognizerDirectionLeft ? UIViewAnimationOptionTransitionFlipFromLeft : UIViewAnimationOptionTransitionFlipFromRight);
+//  } else {
+//    
+//    direction = UIViewAnimationOptionTransitionFlipFromLeft;
+//  }
   
   [UIView transitionWithView: self.view
                     duration: 1.0
-                     options: ([sender direction] != UISwipeGestureRecognizerDirectionLeft ? UIViewAnimationOptionTransitionFlipFromLeft : UIViewAnimationOptionTransitionFlipFromRight)
+                     options: direction
                   animations: ^(void) { [self playMP3File: [NSString stringWithFormat: @"%d-voice", self.mode]]; [self initColors]; }
-                  completion: nil];  
+                  completion: nil];
+  
+}
+
+- (IBAction) selectButtonClicked:(id)sender
+{
+  switch (self.mode) {
+    case MODE_NUMBERS:
+    case MODE_MORENUMBERS:
+      
+      [self selectMode: MODE_COLORS];
+      
+      break;
+      
+    case MODE_COLORS:
+    case MODE_SHAPES:
+      
+      [self selectMode: MODE_NUMBERS];
+      
+    default:
+      break;
+  }
+  
+  self.isRandom = NO;
+  
+  UIViewAnimationOptions direction;
+  direction = UIViewAnimationOptionTransitionFlipFromLeft;
+  
+  [self showTransition: direction];
 }
 
 
@@ -353,80 +554,164 @@
     [self releaseUILock];
   });
   
-
-  
   dispatch_time_t updateTimeA;
   
-  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 0.0f * NSEC_PER_SEC);
-  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+  switch (self.mode) {
+    case MODE_NUMBERS:
+    {
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 0.0f * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 1] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 1);
+      });
+      
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 2] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 2);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 1.5f * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 3] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 3);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 2.8f * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 4] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 4);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 3.5f * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 5] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 5);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 4.2f * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 6] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 6);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 7] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 7);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 6 * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 8] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 8);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 7 * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 9] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 9);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 8 * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 10] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 10);
+      });
+    }
+    break;
+      
+      
+    case MODE_MORENUMBERS:
+    {
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 0.0f * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 11] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 11);
+      });
+      
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 12] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 12);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 1.5f * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 13] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 13);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 2.8f * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 14] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 14);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 3.5f * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 15] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 15);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 4.2f * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 16] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 16);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 17] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 17);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 6 * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 18] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 18);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 7 * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 19] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 19);
+      });
+      
+      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 8 * NSEC_PER_SEC);
+      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+        
+        [[[self getButtonByNumber: 20] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+        NSLog(@"delay: %d", 20);
+      });
+    }
+      break;
     
-    [[[self getButtonByNumber: 1] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-    NSLog(@"delay: %d", 1);
-  });
-
-
-  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC);
-  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-    
-    [[[self getButtonByNumber: 2] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-    NSLog(@"delay: %d", 2);
-  });
-
-  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 1.5f * NSEC_PER_SEC);
-  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-    
-    [[[self getButtonByNumber: 3] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-    NSLog(@"delay: %d", 3);
-  });
-
-  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 2.8f * NSEC_PER_SEC);
-  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-    
-    [[[self getButtonByNumber: 4] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-    NSLog(@"delay: %d", 4);
-  });
-
-  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 3.5f * NSEC_PER_SEC);
-  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-    
-    [[[self getButtonByNumber: 5] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-    NSLog(@"delay: %d", 5);
-  });
-
-  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 4.2f * NSEC_PER_SEC);
-  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-    
-    [[[self getButtonByNumber: 6] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-    NSLog(@"delay: %d", 6);
-  });
-
-  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC);
-  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-    
-    [[[self getButtonByNumber: 7] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-    NSLog(@"delay: %d", 7);
-  });
-
-  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 6 * NSEC_PER_SEC);
-  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-    
-    [[[self getButtonByNumber: 8] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-    NSLog(@"delay: %d", 8);
-  });
-
-  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 7 * NSEC_PER_SEC);
-  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-    
-    [[[self getButtonByNumber: 9] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-    NSLog(@"delay: %d", 9);
-  });
-
-  updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 8 * NSEC_PER_SEC);
-  dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-    
-    [[[self getButtonByNumber: 10] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-    NSLog(@"delay: %d", 10);
-  });
+    default:
+      break;
+  }
+  
 
 }
 
@@ -448,6 +733,31 @@
                    
   NSLog(@"Not found button number: %d", number);
   return NO;
+}
+
+- (IBAction) buyButtonClicked:(id)sender
+{
+  switch (self.mode) {
+    case MODE_NUMBERS:
+      
+      [self selectMode: MODE_MORENUMBERS];
+      
+      break;
+      
+    case MODE_COLORS:
+      
+      [self selectMode: MODE_SHAPES];
+      
+    default:
+      break;
+  }
+  
+  self.isRandom = NO;
+  
+  UIViewAnimationOptions direction;
+  direction = UIViewAnimationOptionTransitionFlipFromLeft;
+  
+  [self showTransition: direction];
 }
 
 - (void)didReceiveMemoryWarning
