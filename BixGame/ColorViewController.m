@@ -31,6 +31,7 @@
 @synthesize recognizer, recognizer1;
 @synthesize bumpAnimation;
 @synthesize buyButton;
+@synthesize colorArrange, colorImages;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -99,10 +100,11 @@
     
     self.colorArrange = @[@"Blue", @"Yellow", @"Green", @"Orange", @"Black", @"White", @"Brown", @"Pink", @"Gray", @"Red"];
     
-    // mode:
-    // 1 for numbers
-    // 2 for colors
-    mode = 1;
+    
+    self.shapes = @[@"ellipse", @"circle", @"square", @"halfcircle", @"rectangle", @"rhombus", @"heart", @"star", @"triangle"];
+    
+    
+    mode = MODE_NUMBERS;
     
     self.selectClickCounter = 0;
     [self playMP3File: @"hello"];
@@ -117,15 +119,27 @@
     bumpAnimation.duration = .3f;
     bumpAnimation.autoreverses = YES;
     
+    NSMutableArray *images = [[NSMutableArray alloc] initWithCapacity: [self.colorArrange count]];
+    for (NSString *colorName in self.colorArrange) {
+      
+      [images addObject: [UIImage imageNamed: colorName]];
+    }
+
+    
+    self.colorImages = [[NSDictionary alloc] initWithObjects: images
+                                                     forKeys: self.colorArrange];
+    
   }
   return self;
 }
 
-- (void) initColors
+- (void) initButtons
 {
   for (UIButton *button in buttons) {
     for (UIView *subView in [button subviews]) {
-      [subView removeFromSuperview];
+      if ([subView isKindOfClass: [UILabel class]]) {
+        [subView removeFromSuperview];
+      }
     }
   }
   
@@ -150,19 +164,35 @@
       a[i] = i + 1;
     }
   }
-  
 
-//  for (NSString *gradientType in [colors allKeys]) {
+  // remove gradients from previous cycle
   
-  for (int i = 0; i < [self.colorArrange count]; i++) {
+//  for (UIButton *cButton in buttons) {
+//    
+//    for (int cLayer = 0; cLayer < [[[cButton layer] sublayers] count]; cLayer++) {
+//      if ([[[[cButton layer] sublayers] objectAtIndex: cLayer] isKindOfClass: [CAGradientLayer class]]) {
+//        
+//        [[[[cButton layer] sublayers] objectAtIndex: cLayer] removeFromSuperlayer];
+//      }
+//    }
+//  }
+
+  int maxButtons;
+  
+  if (self.mode == MODE_SHAPES) {
+    
+    maxButtons = [self.shapes count];
+  } else {
+    
+    maxButtons = [self.colorArrange count];
+  }
+  
+  for (int i = 0; i < maxButtons; i++) {
   
     NSString *gradientType = [self.colorArrange objectAtIndex: i];
     
     UIButton *cButton = (UIButton *)self.buttons[a[i] - 1];
-    CAGradientLayer *gradient = [colors objectForKey: gradientType];
-    
-    UIImageView *strokeImageView;
-    
+//    CAGradientLayer *gradient = [colors objectForKey: gradientType];
     
     [UIView transitionWithView: cButton
                       duration: 1.0
@@ -170,7 +200,15 @@
                     animations: nil
                     completion: NULL];
     
-    if ([gradientType isEqualToString: @"White"]) {
+    [cButton setImage: [self.colorImages objectForKey: gradientType] forState: UIControlStateNormal];
+    
+    // no dots
+    
+    /*
+     
+    UIImageView *strokeImageView;
+
+    if ([gradientType isEqualToString: @"White"] && self.mode != MODE_SHAPES) {
       if ((a[i] - 1) < 9) {
         
         strokeImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"Dots-105x91-black"]];
@@ -188,9 +226,15 @@
       }
     }
     
-    [cButton addSubview: strokeImageView];
+    if (self.mode != MODE_SHAPES) {
+    
+      [cButton addSubview: strokeImageView];
+    }
+    */
     
     UILabel *buttonLabel;
+    UIImageView *shapeImageView;
+    UIImage *shapeImage;
     
     switch (self.mode) {
       case MODE_COLORS:
@@ -213,7 +257,7 @@
         [cButton addSubview: buttonLabel];
         
         cButton.tag = i + 1;
-        
+                
         break;
         
       case MODE_MORENUMBERS:
@@ -231,30 +275,44 @@
         [cButton addSubview: buttonLabel];
 
         cButton.tag = i + 1 + 10;
-
+        
         break;
         
       case MODE_SHAPES:
         
+        shapeImage = [UIImage imageNamed: [self.shapes objectAtIndex: i]];
+                
+        shapeImageView = [[UIImageView alloc] initWithImage: [shapeImage scaleImage: CGSizeMake(85.0f, 75.f)]];
         
+        CGFloat x,y;
+        x = (cButton.frame.size.width - [shapeImageView image].size.width);
+        y = (cButton.frame.size.height - [shapeImageView image].size.height);
+        
+        shapeImageView.frame = CGRectMake(x, y, [shapeImageView image].size.width - x, [shapeImageView image].size.height - y);
+        
+        [cButton addSubview: shapeImageView];
+        
+        cButton.tag = i + 1;
         
         break;
         
       default:
         break;
     }
-    
-    if (self.mode == 1){
-      
-    }
-      
-    gradient.frame = cButton.bounds;
-    [[cButton layer] insertSublayer: gradient atIndex:0];
-    [[cButton layer] setCornerRadius: 8.0f];
-    [[cButton layer] setMasksToBounds: YES];
-    
-    cButton.cColor = gradientType;
 
+    // no gradiens at all :(
+    // no gradient on shapes
+
+//    if (self.mode != MODE_SHAPES) {
+//
+//      gradient.frame = cButton.bounds;
+//      [[cButton layer] insertSublayer: gradient atIndex:0];
+//    }
+    
+//    [[cButton layer] setCornerRadius: 8.0f];
+//    [[cButton layer] setMasksToBounds: YES];
+
+    cButton.cColor = gradientType;
   }
 }
 
@@ -280,8 +338,7 @@
   [self.selectButton setImage: [UIImage imageNamed: [NSString stringWithFormat: @"game-%d", self.mode]]
                      forState: UIControlStateNormal];
 
-  
-  [self initColors];
+  [self initButtons];
   
   if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"splashShowed"]){
     
@@ -299,34 +356,10 @@
 
 - (IBAction) buttonClicked:(id)sender
 {
-  switch (self.mode) {
-    case MODE_MORENUMBERS:
-      if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"moreNumbersPaid"]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Платено!"
-                                                        message: @"Тази част е пластена!\nАко искате да чуете и другите глупости,\nси я купете!"
-                                                       delegate: self
-                                              cancelButtonTitle: @"Не сега"
-                                              otherButtonTitles: @"Купи пакет с числа 11-20 за 56.34лв", @"Купи пакет с числа 11-20 и фигури за 256.18лв", nil];
-        [alert show];
-        return;
-      }
-      
-      break;
-      
-    case MODE_SHAPES:
-      if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"moreNumbersPaid"]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Платено!"
-                                                        message: @"Тази част е пластена!\nАко искате да чуете и другите глупости,\nси я купете!"
-                                                       delegate: self
-                                              cancelButtonTitle: @"Не сега"
-                                              otherButtonTitles: @"Купи пакет с фигурки за 156.34лв", @"Купи пакет с числа 11-20 и фигури за 256.18лв", nil];
-        [alert show];
-        
-        return;
-      }
-      break;
-    default:
-      break;
+  if (self.mode == MODE_MORENUMBERS) {
+    if (! [self isPaid]) {
+      return;
+    }
   }
   
   [self lockUI];
@@ -338,7 +371,7 @@
   });
 
   AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-  if (self.mode == 1) {
+  if (self.mode == MODE_NUMBERS || self.mode == MODE_MORENUMBERS) {
     
   
     [self playMP3File: [NSString stringWithFormat: @"%d", [sender tag]]];
@@ -377,7 +410,8 @@
       notaButton.hidden = YES;
       //        randomButton.hidden = NO;
       
-      [self.buyButton setImage: [UIImage imageNamed: @"Buy-Shapes"] forState: UIControlStateNormal];
+//      [self.buyButton setImage: [UIImage imageNamed: @"Buy-Shapes"] forState: UIControlStateNormal];
+      [self.buyButton setImage: [UIImage imageNamed: @""] forState: UIControlStateNormal];
       
       break;
       
@@ -433,13 +467,17 @@
       
     case MODE_COLORS:
       
-      [self selectMode: MODE_SHAPES];
+//      [self selectMode: MODE_SHAPES];
+      
+      return;
       
       break;
       
     case MODE_SHAPES:
       
-      [self selectMode: MODE_COLORS];
+//      [self selectMode: MODE_COLORS];
+      
+      return;
       
     default:
       break;
@@ -466,7 +504,7 @@
   [UIView transitionWithView: self.view
                     duration: 1.0
                      options: direction
-                  animations: ^(void) { [self playMP3File: [NSString stringWithFormat: @"%d-voice", self.mode]]; [self initColors]; }
+                  animations: ^(void) { [self playMP3File: [NSString stringWithFormat: @"%d-voice", self.mode]]; [self initButtons]; }
                   completion: nil];
   
 }
@@ -545,7 +583,20 @@
 
 - (IBAction) notaButtonClicked:(id)sender
 {
-  [self playMP3File: @"numbers-song"];
+  if (self.mode == MODE_MORENUMBERS) {
+    if (! [self isPaid]) {
+      return;
+    }
+  }
+  
+  if (self.mode == MODE_NUMBERS) {
+    
+    [self playMP3File: @"numbers-song"];
+  } else {
+    
+    [self playMP3File: @"math-song"];
+  }
+  
   [self lockUI];
   int64_t delayInSeconds = 10.0f;
   dispatch_time_t updateTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
@@ -635,76 +686,76 @@
       
     case MODE_MORENUMBERS:
     {
-      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 0.0f * NSEC_PER_SEC);
-      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-        
-        [[[self getButtonByNumber: 11] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-        NSLog(@"delay: %d", 11);
-      });
-      
-      
-      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC);
-      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-        
-        [[[self getButtonByNumber: 12] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-        NSLog(@"delay: %d", 12);
-      });
-      
-      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 1.5f * NSEC_PER_SEC);
-      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-        
-        [[[self getButtonByNumber: 13] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-        NSLog(@"delay: %d", 13);
-      });
-      
-      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 2.8f * NSEC_PER_SEC);
-      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-        
-        [[[self getButtonByNumber: 14] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-        NSLog(@"delay: %d", 14);
-      });
-      
-      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 3.5f * NSEC_PER_SEC);
-      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-        
-        [[[self getButtonByNumber: 15] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-        NSLog(@"delay: %d", 15);
-      });
-      
-      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 4.2f * NSEC_PER_SEC);
-      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-        
-        [[[self getButtonByNumber: 16] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-        NSLog(@"delay: %d", 16);
-      });
-      
-      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC);
-      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-        
-        [[[self getButtonByNumber: 17] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-        NSLog(@"delay: %d", 17);
-      });
-      
-      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 6 * NSEC_PER_SEC);
-      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-        
-        [[[self getButtonByNumber: 18] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-        NSLog(@"delay: %d", 18);
-      });
-      
-      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 7 * NSEC_PER_SEC);
-      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-        
-        [[[self getButtonByNumber: 19] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-        NSLog(@"delay: %d", 19);
-      });
-      
-      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 8 * NSEC_PER_SEC);
-      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
-        
-        [[[self getButtonByNumber: 20] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
-        NSLog(@"delay: %d", 20);
-      });
+//      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 0.0f * NSEC_PER_SEC);
+//      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+//        
+//        [[[self getButtonByNumber: 11] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+//        NSLog(@"delay: %d", 11);
+//      });
+//      
+//      
+//      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC);
+//      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+//        
+//        [[[self getButtonByNumber: 12] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+//        NSLog(@"delay: %d", 12);
+//      });
+//      
+//      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 1.5f * NSEC_PER_SEC);
+//      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+//        
+//        [[[self getButtonByNumber: 13] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+//        NSLog(@"delay: %d", 13);
+//      });
+//      
+//      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 2.8f * NSEC_PER_SEC);
+//      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+//        
+//        [[[self getButtonByNumber: 14] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+//        NSLog(@"delay: %d", 14);
+//      });
+//      
+//      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 3.5f * NSEC_PER_SEC);
+//      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+//        
+//        [[[self getButtonByNumber: 15] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+//        NSLog(@"delay: %d", 15);
+//      });
+//      
+//      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 4.2f * NSEC_PER_SEC);
+//      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+//        
+//        [[[self getButtonByNumber: 16] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+//        NSLog(@"delay: %d", 16);
+//      });
+//      
+//      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC);
+//      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+//        
+//        [[[self getButtonByNumber: 17] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+//        NSLog(@"delay: %d", 17);
+//      });
+//      
+//      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 6 * NSEC_PER_SEC);
+//      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+//        
+//        [[[self getButtonByNumber: 18] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+//        NSLog(@"delay: %d", 18);
+//      });
+//      
+//      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 7 * NSEC_PER_SEC);
+//      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+//        
+//        [[[self getButtonByNumber: 19] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+//        NSLog(@"delay: %d", 19);
+//      });
+//      
+//      updateTimeA = dispatch_time(DISPATCH_TIME_NOW, 8 * NSEC_PER_SEC);
+//      dispatch_after(updateTimeA, dispatch_get_main_queue(), ^(void){
+//        
+//        [[[self getButtonByNumber: 20] layer] addAnimation: self.bumpAnimation forKey: @"scaling"];
+//        NSLog(@"delay: %d", 20);
+//      });
     }
       break;
     
@@ -717,8 +768,14 @@
 
 - (IBAction) randomButtonClicked:(id)sender
 {
+  if (self.mode == MODE_MORENUMBERS) {
+    if (! [self isPaid]) {
+      return;
+    }
+  }
+  
   self.isRandom = self.isRandom ? NO : YES;
-  [self initColors];
+  [self initButtons];
 }
 
 - (UIButton *) getButtonByNumber:(int)number
@@ -758,6 +815,41 @@
   direction = UIViewAnimationOptionTransitionFlipFromLeft;
   
   [self showTransition: direction];
+}
+
+- (BOOL) isPaid
+{
+  if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"moreNumbersPaid"]) {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Платено!"
+                                                    message: @"Тази част е пластена!\nАко искате да чуете и другите глупости,\nси я купете!\nСтрува само 5001,99лв"
+                                                   delegate: self
+                                          cancelButtonTitle: @"Не сега"
+                                          otherButtonTitles: @"Купи", nil];
+    alert.tag = 777;
+    [alert show];
+    return NO;
+  } else {
+    return YES;
+  }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+  if (alertView.tag == 777 && buttonIndex == 1) {
+    
+    if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"moreNumbersPaid"]) {
+      
+      [[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"moreNumbersPaid"];
+      [[NSUserDefaults standardUserDefaults] synchronize];
+      
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Платено"
+                                                      message: @"Благодарим ви че си дадохте парите! Сега ще се напием!"
+                                                     delegate: self
+                                            cancelButtonTitle: @"Продължи"
+                                            otherButtonTitles: nil];
+      [alert show];
+    } 
+  }
 }
 
 - (void)didReceiveMemoryWarning

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import "UIImageExtras.h"
 
 @interface ColorViewController : UIViewController
 
@@ -19,6 +20,8 @@
 @property (retain, nonatomic) UIView *lockView;
 @property (assign, nonatomic) BOOL isRandom;
 @property (retain, nonatomic) NSArray *colorArrange;
+@property (retain, nonatomic) NSArray *shapes;
+@property (retain, nonatomic) NSDictionary *colorImages;
 
 @property (retain, nonatomic) UISwipeGestureRecognizer *recognizer, *recognizer1;
 @property (retain, nonatomic) CABasicAnimation *bumpAnimation;
@@ -39,5 +42,7 @@
 
 - (void) lockUI;
 - (void) releaseUILock;
+
+- (BOOL) isPaid;
 
 @end
