@@ -130,9 +130,7 @@
                                                      forKeys: self.colorArrange];
     
     self.network = [Network sharedInstance];
-    
-//    NETWORK_ADDTOQUEUE(<#callbackMessage#>, <#url#>, <#body#>)
-    
+
   }
   return self;
 }
@@ -347,7 +345,7 @@
   if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"splashShowed"]){
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Здрасти"
-                                                    message: @"Това е един много дълъг текст,\nс много блаблабла\n, който е изключително безмислен,\nно трябва да го има!"
+                                                    message: @"С играта 'Числа и цветове' ученето е лесно и забавно. Детето ви неусетно ще научи числата и цветовете. При натискане  на съответния бутон детето вижда и чува цифрата или цвета. Играта е подходяща за деца от 2 до 5 години."
                                                    delegate: self
                                           cancelButtonTitle: @"Играй!"
                                           otherButtonTitles: nil];
@@ -405,6 +403,8 @@
       
       [self.buyButton setImage: [UIImage imageNamed: @"Buy-button"] forState: UIControlStateNormal];
       
+      SEND_EVENT_NUMBERS
+      
       break;
       
     case MODE_COLORS:
@@ -417,6 +417,8 @@
 //      [self.buyButton setImage: [UIImage imageNamed: @"Buy-Shapes"] forState: UIControlStateNormal];
       [self.buyButton setImage: [UIImage imageNamed: @""] forState: UIControlStateNormal];
       
+      SEND_EVENT_COLORS
+      
       break;
       
     case MODE_MORENUMBERS:
@@ -428,6 +430,8 @@
       //        randomButton.hidden = NO;
       
       [self.buyButton setImage: [UIImage imageNamed: @""] forState: UIControlStateNormal];
+      
+      SEND_EVENT_MORE_NUMBERS
 
       break;
       
@@ -596,9 +600,13 @@
   if (self.mode == MODE_NUMBERS) {
     
     [self playMP3File: @"numbers-song"];
+    
+    SEND_EVENT_SONG1
   } else {
     
     [self playMP3File: @"math-song"];
+    
+    SEND_EVENT_SONG2
   }
   
   [self lockUI];
@@ -852,7 +860,12 @@
                                             cancelButtonTitle: @"Продължи"
                                             otherButtonTitles: nil];
       [alert show];
+      
+      SEND_EVENT_PAID_OK
     } 
+  } else if (alertView.tag == 777 && ! buttonIndex) {
+    
+    SEND_EVENT_PAID_CANCEL
   }
 }
 

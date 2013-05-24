@@ -58,7 +58,7 @@
   
   if ([taskData objectForKey: @"FILEDATA"]) {
     
-    self.currentUploadingId = [taskData objectForKey: @"request_id"];
+    self.currentUploadingId = (NSInteger)[taskData objectForKey: @"request_id"];
     
     [self postDataTo: [taskData objectForKey: @"URL"] postData: [taskData objectForKey: @"POSTDATA"] fileData: [taskData objectForKey: @"FILEDATA"]];
   } else {
@@ -107,6 +107,10 @@
 - (BOOL) addToQueue: (NSDictionary *) taskData
 {
   // Need to imeplement some checking code
+  
+#ifdef NETWORK_DEBUG
+  NSLog(@"taskData: %@", taskData);
+#endif
   
   [self.tasksQueue addObject: taskData];
   
@@ -408,19 +412,13 @@
   NSLog(@"Connection error: %@", [error localizedDescription]);
 #endif
   
-  UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Error"
-                                                  message: [error localizedDescription]
-                                                 delegate: self
-                                        cancelButtonTitle: @"Close"
-                                        otherButtonTitles: nil];
-  [alert show];
-  
-  //  [[NSNotificationCenter defaultCenter] postNotificationName: callbackMessage object: nil];
-  
-  // On network error show login screen
-  
-  [[NSNotificationCenter defaultCenter] postNotificationName: @"showLoginScreen" object: nil];
-  
+//  UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Error"
+//                                                  message: [error localizedDescription]
+//                                                 delegate: self
+//                                        cancelButtonTitle: @"Close"
+//                                        otherButtonTitles: nil];
+//  [alert show];
+    
   self.isLocked = NO;
 }
 

@@ -12,5 +12,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, retain) NSMutableDictionary *notificationData;
+@property (retain, nonatomic) Network *network;
+@property (assign, nonatomic) BOOL isStarted;
 
 @end

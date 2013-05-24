@@ -25,9 +25,24 @@ forKeys: @[@"callbackMessage", @"URL", @"METHOD", @"BODY"]]];
 #define baseurl @"http://bixgame.exclus.org/mobile/"
 #define URL_FOR(action) [baseurl stringByAppendingString: @#action]
 
-#define LOGIN_STRING(username, password, deviceToken) [NSString stringWithFormat: @"username=%@&password=%@&device_token=%@", username, password, deviceToken]
+#define SETUP_STRING [NSString stringWithFormat: @"deviceId=%@&deviceType=%@&deviceOs=%@", [OpenUDID value], [[UIDevice currentDevice] model], [UIDevice currentDevice].systemVersion]
+#define SEND_SETUP NETWORK_ADDTOQUEUE(@"networkCallback", URL_FOR(setup), ([NSString stringWithFormat: @"deviceId=%@&deviceType=%@&deviceOs=%@", [OpenUDID value], [[UIDevice currentDevice] model], [UIDevice currentDevice].systemVersion]));
 
-#define SETUP_STRING(deviceToken, deviceOs, deviceModel) fdgdfg
+#define SEND_EVENT(eventType) NETWORK_ADDTOQUEUE(@"networkCallback", URL_FOR(update), ([NSString stringWithFormat: @"deviceId=%@&event=%@", [OpenUDID value], eventType]));
+
+#define SEND_EVENT_STARTED SEND_EVENT(@"STARTED")
+#define SEND_EVENT_SUSPENDED SEND_EVENT(@"SUSPENDED")
+#define SEND_EVENT_RESUMED SEND_EVENT(@"RESUMED");
+#define SEND_EVENT_QUIT SEND_EVENT(@"QUIT")
+#define SEND_EVENT_NUMBERS SEND_EVENT(@"NUMBERS")
+#define SEND_EVENT_MORE_NUMBERS SEND_EVENT(@"MORE_NUMBERS")
+#define SEND_EVENT_COLORS SEND_EVENT(@"COLORS")
+#define SEND_EVENT_PAID_CANCEL SEND_EVENT(@"PAID_CANCEL")
+#define SEND_EVENT_PAID_OK SEND_EVENT(@"PAID_OK")
+#define SEND_EVENT_SONG1 SEND_EVENT(@"SONG1")
+#define SEND_EVENT_SONG2 SEND_EVENT(@"SONG2")
+
+//#define NETWORK_DEBUG YES
 
 
 @interface Network : NSObject <NSURLConnectionDataDelegate>

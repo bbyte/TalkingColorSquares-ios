@@ -77,6 +77,8 @@
 		88F0FFD2174EC768000F29A2 /* game-2-57.png in Resources */ = {isa = PBXBuildFile; fileRef = 88F0FFD1174EC768000F29A2 /* game-2-57.png */; };
 		88F0FFD4174EC774000F29A2 /* game-2-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 88F0FFD3174EC774000F29A2 /* game-2-114.png */; };
 		88F0FFDF174EE476000F29A2 /* Network.m in Sources */ = {isa = PBXBuildFile; fileRef = 88F0FFDE174EE476000F29A2 /* Network.m */; };
+		88F0FFE4174F66A3000F29A2 /* OpenUDID.m in Sources */ = {isa = PBXBuildFile; fileRef = 88F0FFE2174F66A3000F29A2 /* OpenUDID.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		88F0FFE5174F66A3000F29A2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 88F0FFE3174F66A3000F29A2 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -158,6 +160,9 @@
 		88F0FFD3174EC774000F29A2 /* game-2-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "game-2-114.png"; path = "../game-2-114.png"; sourceTree = "<group>"; };
 		88F0FFDD174EE476000F29A2 /* Network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Network.h; sourceTree = "<group>"; };
 		88F0FFDE174EE476000F29A2 /* Network.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Network.m; sourceTree = "<group>"; };
+		88F0FFE1174F66A3000F29A2 /* OpenUDID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenUDID.h; sourceTree = "<group>"; };
+		88F0FFE2174F66A3000F29A2 /* OpenUDID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenUDID.m; sourceTree = "<group>"; };
+		88F0FFE3174F66A3000F29A2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +215,7 @@
 		887976D8173441ED00935E17 /* BixGame */ = {
 			isa = PBXGroup;
 			children = (
+				88F0FFE0174F66A3000F29A2 /* OpenUDID */,
 				88F0FFDD174EE476000F29A2 /* Network.h */,
 				88F0FFDE174EE476000F29A2 /* Network.m */,
 				88837A7A1746E21F000AB46F /* UIImageExtras.h */,
@@ -307,6 +313,16 @@
 				887976E8173441ED00935E17 /* Default-568h@2x.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		88F0FFE0174F66A3000F29A2 /* OpenUDID */ = {
+			isa = PBXGroup;
+			children = (
+				88F0FFE1174F66A3000F29A2 /* OpenUDID.h */,
+				88F0FFE2174F66A3000F29A2 /* OpenUDID.m */,
+				88F0FFE3174F66A3000F29A2 /* README.md */,
+			);
+			path = OpenUDID;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -418,6 +434,7 @@
 				88F0FFD0174EB879000F29A2 /* ColorViewController~ipad.xib in Resources */,
 				88F0FFD2174EC768000F29A2 /* game-2-57.png in Resources */,
 				88F0FFD4174EC774000F29A2 /* game-2-114.png in Resources */,
+				88F0FFE5174F66A3000F29A2 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,6 +451,7 @@
 				88B8EEEB173589EF00AAD8F4 /* UIButtonExtras.m in Sources */,
 				88837A7C1746E21F000AB46F /* UIImageExtras.m in Sources */,
 				88F0FFDF174EE476000F29A2 /* Network.m in Sources */,
+				88F0FFE4174F66A3000F29A2 /* OpenUDID.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,7 +481,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Nikola Kotarov (KHETJPDVSR)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nikola Kotarov (KHETJPDVSR)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -478,6 +497,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "423EB479-2B30-4D11-B5B3-85C3223A63E6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4C9B4593-29D7-421A-AC79-7D6AF453AF94";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -495,7 +516,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Nikola Kotarov (KHETJPDVSR)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nikola Kotarov (KHETJPDVSR)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -503,6 +525,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "423EB479-2B30-4D11-B5B3-85C3223A63E6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "423EB479-2B30-4D11-B5B3-85C3223A63E6";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
