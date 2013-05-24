@@ -26,6 +26,7 @@
 @property (retain, nonatomic) UISwipeGestureRecognizer *recognizer, *recognizer1;
 @property (retain, nonatomic) CABasicAnimation *bumpAnimation;
 
+@property (retain, nonatomic) Network *network;
 
 
 - (IBAction) buttonClicked:(id)sender;

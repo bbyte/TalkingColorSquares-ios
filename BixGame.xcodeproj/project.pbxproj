@@ -76,10 +76,7 @@
 		88F0FFD0174EB879000F29A2 /* ColorViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88F0FFCF174EB879000F29A2 /* ColorViewController~ipad.xib */; };
 		88F0FFD2174EC768000F29A2 /* game-2-57.png in Resources */ = {isa = PBXBuildFile; fileRef = 88F0FFD1174EC768000F29A2 /* game-2-57.png */; };
 		88F0FFD4174EC774000F29A2 /* game-2-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 88F0FFD3174EC774000F29A2 /* game-2-114.png */; };
-		88F0FFD6174ECC09000F29A2 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F0FFD5174ECC09000F29A2 /* libz.dylib */; };
-		88F0FFD8174ECC18000F29A2 /* NewRelicAgent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F0FFD7174ECC18000F29A2 /* NewRelicAgent.framework */; };
-		88F0FFDA174ECC79000F29A2 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F0FFD9174ECC79000F29A2 /* CoreTelephony.framework */; };
-		88F0FFDC174ECC86000F29A2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F0FFDB174ECC85000F29A2 /* SystemConfiguration.framework */; };
+		88F0FFDF174EE476000F29A2 /* Network.m in Sources */ = {isa = PBXBuildFile; fileRef = 88F0FFDE174EE476000F29A2 /* Network.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -159,10 +156,8 @@
 		88F0FFCF174EB879000F29A2 /* ColorViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "ColorViewController~ipad.xib"; sourceTree = "<group>"; };
 		88F0FFD1174EC768000F29A2 /* game-2-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "game-2-57.png"; path = "../game-2-57.png"; sourceTree = "<group>"; };
 		88F0FFD3174EC774000F29A2 /* game-2-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "game-2-114.png"; path = "../game-2-114.png"; sourceTree = "<group>"; };
-		88F0FFD5174ECC09000F29A2 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		88F0FFD7174ECC18000F29A2 /* NewRelicAgent.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NewRelicAgent.framework; path = ../../../Downloads/NewRelic_iOS_Agent_1.328/NewRelicAgent.framework; sourceTree = "<group>"; };
-		88F0FFD9174ECC79000F29A2 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		88F0FFDB174ECC85000F29A2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		88F0FFDD174EE476000F29A2 /* Network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Network.h; sourceTree = "<group>"; };
+		88F0FFDE174EE476000F29A2 /* Network.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Network.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,10 +165,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88F0FFDC174ECC86000F29A2 /* SystemConfiguration.framework in Frameworks */,
-				88F0FFDA174ECC79000F29A2 /* CoreTelephony.framework in Frameworks */,
-				88F0FFD8174ECC18000F29A2 /* NewRelicAgent.framework in Frameworks */,
-				88F0FFD6174ECC09000F29A2 /* libz.dylib in Frameworks */,
 				88E210F117443AC400C13E72 /* StoreKit.framework in Frameworks */,
 				88B8EED21735853A00AAD8F4 /* AudioToolbox.framework in Frameworks */,
 				887976F5173558E900935E17 /* QuartzCore.framework in Frameworks */,
@@ -189,8 +180,6 @@
 		887976C6173441ED00935E17 = {
 			isa = PBXGroup;
 			children = (
-				88F0FFDB174ECC85000F29A2 /* SystemConfiguration.framework */,
-				88F0FFD9174ECC79000F29A2 /* CoreTelephony.framework */,
 				887976D8173441ED00935E17 /* BixGame */,
 				887976D1173441ED00935E17 /* Frameworks */,
 				887976D0173441ED00935E17 /* Products */,
@@ -208,8 +197,6 @@
 		887976D1173441ED00935E17 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				88F0FFD5174ECC09000F29A2 /* libz.dylib */,
-				88F0FFD7174ECC18000F29A2 /* NewRelicAgent.framework */,
 				88E210F017443AC400C13E72 /* StoreKit.framework */,
 				88B8EED11735853A00AAD8F4 /* AudioToolbox.framework */,
 				887976F4173558E900935E17 /* QuartzCore.framework */,
@@ -223,6 +210,8 @@
 		887976D8173441ED00935E17 /* BixGame */ = {
 			isa = PBXGroup;
 			children = (
+				88F0FFDD174EE476000F29A2 /* Network.h */,
+				88F0FFDE174EE476000F29A2 /* Network.m */,
 				88837A7A1746E21F000AB46F /* UIImageExtras.h */,
 				88837A7B1746E21F000AB46F /* UIImageExtras.m */,
 				887976E1173441ED00935E17 /* AppDelegate.h */,
@@ -444,6 +433,7 @@
 				887976F21734422200935E17 /* ColorViewController.m in Sources */,
 				88B8EEEB173589EF00AAD8F4 /* UIButtonExtras.m in Sources */,
 				88837A7C1746E21F000AB46F /* UIImageExtras.m in Sources */,
+				88F0FFDF174EE476000F29A2 /* Network.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

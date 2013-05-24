@@ -129,6 +129,10 @@
     self.colorImages = [[NSDictionary alloc] initWithObjects: images
                                                      forKeys: self.colorArrange];
     
+    self.network = [Network sharedInstance];
+    
+//    NETWORK_ADDTOQUEUE(<#callbackMessage#>, <#url#>, <#body#>)
+    
   }
   return self;
 }
