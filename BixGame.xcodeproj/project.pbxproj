@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		881EF44817516F0E0058283D /* IAPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 881EF44717516F0E0058283D /* IAPHelper.m */; };
+		881EF44B175170420058283D /* ColorIAPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 881EF44A175170420058283D /* ColorIAPHelper.m */; };
 		887976D3173441ED00935E17 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887976D2173441ED00935E17 /* UIKit.framework */; };
 		887976D5173441ED00935E17 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887976D4173441ED00935E17 /* Foundation.framework */; };
 		887976D7173441ED00935E17 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887976D6173441ED00935E17 /* CoreGraphics.framework */; };
@@ -82,6 +84,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		881EF44517515F7D0058283D /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		881EF44617516F0E0058283D /* IAPHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAPHelper.h; sourceTree = "<group>"; };
+		881EF44717516F0E0058283D /* IAPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAPHelper.m; sourceTree = "<group>"; };
+		881EF449175170420058283D /* ColorIAPHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorIAPHelper.h; sourceTree = "<group>"; };
+		881EF44A175170420058283D /* ColorIAPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorIAPHelper.m; sourceTree = "<group>"; };
 		887976CF173441ED00935E17 /* BixGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BixGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		887976D2173441ED00935E17 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		887976D4173441ED00935E17 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -229,6 +236,10 @@
 				88B8EEE9173589EE00AAD8F4 /* UIButtonExtras.h */,
 				88B8EEEA173589EE00AAD8F4 /* UIButtonExtras.m */,
 				887976D9173441ED00935E17 /* Supporting Files */,
+				881EF44617516F0E0058283D /* IAPHelper.h */,
+				881EF44717516F0E0058283D /* IAPHelper.m */,
+				881EF449175170420058283D /* ColorIAPHelper.h */,
+				881EF44A175170420058283D /* ColorIAPHelper.m */,
 			);
 			path = BixGame;
 			sourceTree = "<group>";
@@ -360,6 +371,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				bg,
 			);
 			mainGroup = 887976C6173441ED00935E17;
 			productRefGroup = 887976D0173441ED00935E17 /* Products */;
@@ -452,6 +464,8 @@
 				88837A7C1746E21F000AB46F /* UIImageExtras.m in Sources */,
 				88F0FFDF174EE476000F29A2 /* Network.m in Sources */,
 				88F0FFE4174F66A3000F29A2 /* OpenUDID.m in Sources */,
+				881EF44817516F0E0058283D /* IAPHelper.m in Sources */,
+				881EF44B175170420058283D /* ColorIAPHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,6 +476,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				887976DC173441ED00935E17 /* en */,
+				881EF44517515F7D0058283D /* bg */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

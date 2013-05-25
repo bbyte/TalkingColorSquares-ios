@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "UIImageExtras.h"
+#import <StoreKit/StoreKit.h>
+UIKIT_EXTERN NSString *const IAPHelperProductPurchasedNotification;
 
 @interface ColorViewController : UIViewController
 

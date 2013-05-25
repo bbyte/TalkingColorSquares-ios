@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ColorViewController.h"
+#import "ColorIAPHelper.h"
 
 
 @implementation AppDelegate
@@ -38,6 +39,8 @@
   
   self.network = [Network sharedInstance];
 
+  [ColorIAPHelper sharedInstance];
+  
   // first time start
   
   if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"splashShowed"]){

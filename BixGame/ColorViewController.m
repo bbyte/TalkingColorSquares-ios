@@ -14,10 +14,12 @@
 
 #define randrange(N) rand() / (RAND_MAX/(N) + 1)
 #define DEFAULT_UILOCKTIME 1.5f
-#define MODE_NUMBERS 1 
+#define MODE_NUMBERS 1
 #define MODE_COLORS 2 
 #define MODE_MORENUMBERS 3 
 #define MODE_SHAPES 4
+
+#define INAPPPURCHASESECRET 915142b03d74484788d0879bb58cf50e
 
 @interface ColorViewController ()
 
@@ -597,20 +599,26 @@
     }
   }
   
+  float lockTime;
+  
   if (self.mode == MODE_NUMBERS) {
     
     [self playMP3File: @"numbers-song"];
+    
+    lockTime = 10.0f;
     
     SEND_EVENT_SONG1
   } else {
     
     [self playMP3File: @"math-song"];
     
+    lockTime = 13.0f;
+    
     SEND_EVENT_SONG2
   }
   
   [self lockUI];
-  int64_t delayInSeconds = 10.0f;
+  int64_t delayInSeconds = lockTime;
   dispatch_time_t updateTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
   dispatch_after(updateTime, dispatch_get_main_queue(), ^(void){
     
