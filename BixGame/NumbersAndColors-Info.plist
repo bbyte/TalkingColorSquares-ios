@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>bg</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIcons</key>
@@ -12,15 +12,15 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
-				<string>Swith-button-123_57.png</string>
-				<string>Swith-button-123_114.png</string>
 				<string>game-2-57.png</string>
 				<string>game-2-114.png</string>
+				<string>game-2-72.png</string>
+				<string>game-2-144.png</string>
 			</array>
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.exclux.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.biks.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

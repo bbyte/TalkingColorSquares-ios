@@ -17,7 +17,8 @@
   static ColorIAPHelper *sharedInstance;
   dispatch_once(&once, ^{
     NSSet * productIdentifiers = [NSSet setWithObjects:
-                                  @"NumbersAndColors",
+//                                  @"NumbersAndColors",
+                                  @"com.biks.NumbersAndColors.morenumbers2",
                                   nil];
     sharedInstance = [[self alloc] initWithProductIdentifiers:productIdentifiers];
   });

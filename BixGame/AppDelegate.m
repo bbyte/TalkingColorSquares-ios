@@ -16,6 +16,7 @@
 @synthesize notificationData;
 @synthesize network;
 @synthesize isStarted;
+@synthesize deviceToken;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -45,8 +46,6 @@
   
   if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"splashShowed"]){
     
-//    NETWORK_ADDTOQUEUE(@"networkCallback", URL_FOR(setup), ([NSString stringWithFormat: @"deviceId=%@&deviceType=%@&deviceOs=%@", [OpenUDID value], [[UIDevice currentDevice] model], [UIDevice currentDevice].systemVersion]));
-    
     SEND_SETUP
   }
   
@@ -67,15 +66,20 @@
 {
   
   // Prepare the Device Token for Registration (remove spaces and < >)
-  NSString *deviceToken = [[[[devToken description]
+  self.deviceToken = [[[[devToken description]
                              stringByReplacingOccurrencesOfString: @"<" withString:@""]
                             stringByReplacingOccurrencesOfString: @">" withString:@""]
                            stringByReplacingOccurrencesOfString: @" " withString: @""];
   
 //  [[[Global variable] device] setObject: deviceToken forKey: @"token"];
   
-  NSLog(@"Generated token: %@", deviceToken);
+  NSLog(@"Generated token: %@", self.deviceToken);
 //  NSLog(@"Here: %@", [[[Global variable] device] objectForKey: @"token"]);
+  
+//  if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"splashShowed"]){
+  
+    SEND_TOKEN_UPDATE(self.deviceToken);
+//  }
 }
 
 /**

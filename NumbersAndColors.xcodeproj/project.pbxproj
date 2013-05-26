@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		881EF44817516F0E0058283D /* IAPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 881EF44717516F0E0058283D /* IAPHelper.m */; };
 		881EF44B175170420058283D /* ColorIAPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 881EF44A175170420058283D /* ColorIAPHelper.m */; };
+		881EF453175299F70058283D /* game-2-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 881EF452175299F70058283D /* game-2-72.png */; };
+		881EF45517529A660058283D /* game-2-144.png in Resources */ = {isa = PBXBuildFile; fileRef = 881EF45417529A660058283D /* game-2-144.png */; };
 		887976D3173441ED00935E17 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887976D2173441ED00935E17 /* UIKit.framework */; };
 		887976D5173441ED00935E17 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887976D4173441ED00935E17 /* Foundation.framework */; };
 		887976D7173441ED00935E17 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887976D6173441ED00935E17 /* CoreGraphics.framework */; };
@@ -89,14 +91,16 @@
 		881EF44717516F0E0058283D /* IAPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAPHelper.m; sourceTree = "<group>"; };
 		881EF449175170420058283D /* ColorIAPHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorIAPHelper.h; sourceTree = "<group>"; };
 		881EF44A175170420058283D /* ColorIAPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorIAPHelper.m; sourceTree = "<group>"; };
-		887976CF173441ED00935E17 /* BixGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BixGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		881EF452175299F70058283D /* game-2-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "game-2-72.png"; sourceTree = "<group>"; };
+		881EF45417529A660058283D /* game-2-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "game-2-144.png"; sourceTree = "<group>"; };
+		887976CF173441ED00935E17 /* NumbersAndColors.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NumbersAndColors.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		887976D2173441ED00935E17 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		887976D4173441ED00935E17 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		887976D6173441ED00935E17 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		887976DA173441ED00935E17 /* BixGame-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BixGame-Info.plist"; sourceTree = "<group>"; };
+		887976DA173441ED00935E17 /* NumbersAndColors-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NumbersAndColors-Info.plist"; sourceTree = "<group>"; };
 		887976DC173441ED00935E17 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		887976DE173441ED00935E17 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		887976E0173441ED00935E17 /* BixGame-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BixGame-Prefix.pch"; sourceTree = "<group>"; };
+		887976E0173441ED00935E17 /* NumbersAndColors-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NumbersAndColors-Prefix.pch"; sourceTree = "<group>"; };
 		887976E1173441ED00935E17 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		887976E2173441ED00935E17 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		887976E4173441ED00935E17 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -192,6 +196,8 @@
 		887976C6173441ED00935E17 = {
 			isa = PBXGroup;
 			children = (
+				881EF45417529A660058283D /* game-2-144.png */,
+				881EF452175299F70058283D /* game-2-72.png */,
 				887976D8173441ED00935E17 /* BixGame */,
 				887976D1173441ED00935E17 /* Frameworks */,
 				887976D0173441ED00935E17 /* Products */,
@@ -201,7 +207,7 @@
 		887976D0173441ED00935E17 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				887976CF173441ED00935E17 /* BixGame.app */,
+				887976CF173441ED00935E17 /* NumbersAndColors.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -247,10 +253,10 @@
 		887976D9173441ED00935E17 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				887976DA173441ED00935E17 /* BixGame-Info.plist */,
+				887976DA173441ED00935E17 /* NumbersAndColors-Info.plist */,
 				887976DB173441ED00935E17 /* InfoPlist.strings */,
 				887976DE173441ED00935E17 /* main.m */,
-				887976E0173441ED00935E17 /* BixGame-Prefix.pch */,
+				887976E0173441ED00935E17 /* NumbersAndColors-Prefix.pch */,
 				88E210F217443AF700C13E72 /* Images */,
 				88B8EEF01737070700AAD8F4 /* Audio */,
 			);
@@ -339,9 +345,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		887976CE173441ED00935E17 /* BixGame */ = {
+		887976CE173441ED00935E17 /* NumbersAndColors */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 887976EC173441ED00935E17 /* Build configuration list for PBXNativeTarget "BixGame" */;
+			buildConfigurationList = 887976EC173441ED00935E17 /* Build configuration list for PBXNativeTarget "NumbersAndColors" */;
 			buildPhases = (
 				887976CB173441ED00935E17 /* Sources */,
 				887976CC173441ED00935E17 /* Frameworks */,
@@ -351,9 +357,9 @@
 			);
 			dependencies = (
 			);
-			name = BixGame;
+			name = NumbersAndColors;
 			productName = BixGame;
-			productReference = 887976CF173441ED00935E17 /* BixGame.app */;
+			productReference = 887976CF173441ED00935E17 /* NumbersAndColors.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -365,7 +371,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Nikola Kotarov";
 			};
-			buildConfigurationList = 887976CA173441ED00935E17 /* Build configuration list for PBXProject "BixGame" */;
+			buildConfigurationList = 887976CA173441ED00935E17 /* Build configuration list for PBXProject "NumbersAndColors" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -378,7 +384,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				887976CE173441ED00935E17 /* BixGame */,
+				887976CE173441ED00935E17 /* NumbersAndColors */,
 			);
 		};
 /* End PBXProject section */
@@ -447,6 +453,8 @@
 				88F0FFD2174EC768000F29A2 /* game-2-57.png in Resources */,
 				88F0FFD4174EC774000F29A2 /* game-2-114.png in Resources */,
 				88F0FFE5174F66A3000F29A2 /* README.md in Resources */,
+				881EF453175299F70058283D /* game-2-72.png in Resources */,
+				881EF45517529A660058283D /* game-2-144.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,8 +504,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Nikola Kotarov (KHETJPDVSR)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nikola Kotarov (KHETJPDVSR)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Aleksandar Biks (3RGQQY5A26)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Aleksandar Biks (3RGQQY5A26)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -512,8 +520,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "4BCAEF5B-3AB6-4ABB-B93A-173063FC69AE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4BCAEF5B-3AB6-4ABB-B93A-173063FC69AE";
+				PROVISIONING_PROFILE = "0EAA05BC-DBD0-4AF9-8C72-B8A5E2FCD087";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0EAA05BC-DBD0-4AF9-8C72-B8A5E2FCD087";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -531,8 +539,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Nikola Kotarov (KHETJPDVSR)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Nikola Kotarov (KHETJPDVSR)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Aleksandar Biks (R8LNKX8U2S)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Aleksandar Biks (R8LNKX8U2S)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -540,8 +548,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "4BCAEF5B-3AB6-4ABB-B93A-173063FC69AE";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4BCAEF5B-3AB6-4ABB-B93A-173063FC69AE";
+				PROVISIONING_PROFILE = "B50EA367-4DF4-4FB2-9E0E-EEAB9AAE05CB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B50EA367-4DF4-4FB2-9E0E-EEAB9AAE05CB";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -556,10 +564,10 @@
 					"\"$(SRCROOT)/../../../Downloads/NewRelic_iOS_Agent_1.328\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "BixGame/BixGame-Prefix.pch";
-				INFOPLIST_FILE = "BixGame/BixGame-Info.plist";
+				GCC_PREFIX_HEADER = "BixGame/NumbersAndColors-Prefix.pch";
+				INFOPLIST_FILE = "BixGame/NumbersAndColors-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = NumbersAndColors;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -573,10 +581,10 @@
 					"\"$(SRCROOT)/../../../Downloads/NewRelic_iOS_Agent_1.328\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "BixGame/BixGame-Prefix.pch";
-				INFOPLIST_FILE = "BixGame/BixGame-Info.plist";
+				GCC_PREFIX_HEADER = "BixGame/NumbersAndColors-Prefix.pch";
+				INFOPLIST_FILE = "BixGame/NumbersAndColors-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = NumbersAndColors;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -585,7 +593,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		887976CA173441ED00935E17 /* Build configuration list for PBXProject "BixGame" */ = {
+		887976CA173441ED00935E17 /* Build configuration list for PBXProject "NumbersAndColors" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				887976EA173441ED00935E17 /* Debug */,
@@ -594,7 +602,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		887976EC173441ED00935E17 /* Build configuration list for PBXNativeTarget "BixGame" */ = {
+		887976EC173441ED00935E17 /* Build configuration list for PBXNativeTarget "NumbersAndColors" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				887976ED173441ED00935E17 /* Debug */,

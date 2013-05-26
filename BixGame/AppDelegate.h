@@ -14,5 +14,6 @@
 @property (nonatomic, retain) NSMutableDictionary *notificationData;
 @property (retain, nonatomic) Network *network;
 @property (assign, nonatomic) BOOL isStarted;
+@property (retain, nonatomic) NSString *deviceToken;
 
 @end

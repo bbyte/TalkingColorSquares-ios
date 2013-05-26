@@ -27,6 +27,7 @@ forKeys: @[@"callbackMessage", @"URL", @"METHOD", @"BODY"]]];
 
 #define SETUP_STRING [NSString stringWithFormat: @"deviceId=%@&deviceType=%@&deviceOs=%@", [OpenUDID value], [[UIDevice currentDevice] model], [UIDevice currentDevice].systemVersion]
 #define SEND_SETUP NETWORK_ADDTOQUEUE(@"networkCallback", URL_FOR(setup), ([NSString stringWithFormat: @"deviceId=%@&deviceType=%@&deviceOs=%@", [OpenUDID value], [[UIDevice currentDevice] model], [UIDevice currentDevice].systemVersion]));
+#define SEND_TOKEN_UPDATE(token) NETWORK_ADDTOQUEUE(@"networkCallback", URL_FOR(setToken), ([NSString stringWithFormat: @"deviceId=%@&deviceToken=%@", [OpenUDID value], token]));
 
 #define SEND_EVENT(eventType) NETWORK_ADDTOQUEUE(@"networkCallback", URL_FOR(update), ([NSString stringWithFormat: @"deviceId=%@&event=%@", [OpenUDID value], eventType]));
 
@@ -74,6 +75,8 @@ forKeys: @[@"callbackMessage", @"URL", @"METHOD", @"BODY"]]];
 @property (assign, nonatomic) NSInteger uploadType;
 @property (assign, nonatomic) BOOL isFileUploading;
 @property (assign, nonatomic) NSInteger currentUploadingId;
+
+@property (retain, nonatomic) NSString *deviceToken;
 
 + (id) sharedInstance;
 

@@ -367,7 +367,6 @@ NSNumberFormatter * _priceFormatter;
   
   _products = nil;
   SKProduct *product = [[SKProduct alloc] init];
-  [product ]
   
   [[ColorIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products) {
     if (success) {
@@ -478,12 +477,13 @@ NSNumberFormatter * _priceFormatter;
 - (void) swipeDetect: (id) sender
 {
 
-  NSLog(@"%d", self.mode);
+  return;
+//  NSLog(@"%d", self.mode);
   
   switch (self.mode) {
     case MODE_NUMBERS:
       
-      [self selectMode: MODE_MORENUMBERS];
+//      [self selectMode: MODE_MORENUMBERS];
       
       break;
       
@@ -513,7 +513,7 @@ NSNumberFormatter * _priceFormatter;
 
   UIViewAnimationOptions animationDirection;
   
-  NSLog(@"Direction: %d %d %d", [sender direction],UISwipeGestureRecognizerDirectionLeft, UISwipeGestureRecognizerDirectionRight );
+//  NSLog(@"Direction: %d %d %d", [sender direction],UISwipeGestureRecognizerDirectionLeft, UISwipeGestureRecognizerDirectionRight );
 
   animationDirection = ([sender direction] != UISwipeGestureRecognizerDirectionLeft ? UIViewAnimationOptionTransitionFlipFromLeft : UIViewAnimationOptionTransitionFlipFromRight);
   [self showTransition: animationDirection];
@@ -879,8 +879,10 @@ NSNumberFormatter * _priceFormatter;
     
     if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"moreNumbersPaid"]) {
       
+      NSLog(@"Products: %@", self._products);
       
       SKProduct *product = self._products[0];
+
       
       NSLog(@"Buying %@...", product.productIdentifier);
       [[ColorIAPHelper sharedInstance] buyProduct:product];
