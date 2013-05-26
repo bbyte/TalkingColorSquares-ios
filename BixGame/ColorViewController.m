@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "UIButtonExtras.h"
+#import "ColorIAPHelper.h"
 
 
 #define randrange(N) rand() / (RAND_MAX/(N) + 1)
@@ -34,6 +35,9 @@
 @synthesize bumpAnimation;
 @synthesize buyButton;
 @synthesize colorArrange, colorImages;
+@synthesize _products;
+
+NSNumberFormatter * _priceFormatter;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -346,7 +350,7 @@
   
   if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"splashShowed"]){
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Здрасти"
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"За играта"
                                                     message: @"С играта 'Числа и цветове' ученето е лесно и забавно. Детето ви неусетно ще научи числата и цветовете. При натискане  на съответния бутон детето вижда и чува цифрата или цвета. Играта е подходяща за деца от 2 до 5 години."
                                                    delegate: self
                                           cancelButtonTitle: @"Играй!"
@@ -356,6 +360,20 @@
     
     [[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"splashShowed"];
   }
+  
+  _priceFormatter = [[NSNumberFormatter alloc] init];
+  [_priceFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
+  [_priceFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+  
+  _products = nil;
+  SKProduct *product = [[SKProduct alloc] init];
+  [product ]
+  
+  [[ColorIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products) {
+    if (success) {
+      self._products = @[(SKProduct *) @"NumbersAndColors"];
+    }
+  }];
 }
 
 - (IBAction) buttonClicked:(id)sender
@@ -839,12 +857,14 @@
 
 - (BOOL) isPaid
 {
+
+  
   if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"moreNumbersPaid"]) {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Платено!"
-                                                    message: @"Тази част е пластена!\nАко искате да чуете и другите глупости,\nси я купете!\nСтрува само 5001,99лв"
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"За повече знания"
+                                                    message: @"Купи допълнителен пакет с числата от 11 до 20"
                                                    delegate: self
-                                          cancelButtonTitle: @"Не сега"
-                                          otherButtonTitles: @"Купи", nil];
+                                          cancelButtonTitle: @"По-късно"
+                                          otherButtonTitles: @"Купи сега", @"Вече го имам пакета", nil];
     alert.tag = 777;
     [alert show];
     return NO;
@@ -859,22 +879,49 @@
     
     if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"moreNumbersPaid"]) {
       
-      [[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"moreNumbersPaid"];
-      [[NSUserDefaults standardUserDefaults] synchronize];
       
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Платено"
-                                                      message: @"Благодарим ви че си дадохте парите! Сега ще се напием!"
-                                                     delegate: self
-                                            cancelButtonTitle: @"Продължи"
-                                            otherButtonTitles: nil];
-      [alert show];
+      SKProduct *product = self._products[0];
       
-      SEND_EVENT_PAID_OK
-    } 
+      NSLog(@"Buying %@...", product.productIdentifier);
+      [[ColorIAPHelper sharedInstance] buyProduct:product];
+    }
   } else if (alertView.tag == 777 && ! buttonIndex) {
     
     SEND_EVENT_PAID_CANCEL
+  } else if (alertView.tag == 777 && buttonIndex == 2) {
+    
+    [[ColorIAPHelper sharedInstance] restoreCompletedTransactions];
   }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)productPurchased:(NSNotification *)notification {
+  
+  NSString * productIdentifier = notification.object;
+  [_products enumerateObjectsUsingBlock:^(SKProduct * product, NSUInteger idx, BOOL *stop) {
+
+    [[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"moreNumbersPaid"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    SEND_EVENT_PAID_OK
+
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Ок"
+                                                    message: @"Плащането беше извършено успешно. Благодарим Ви!"
+                                                   delegate: self
+                                          cancelButtonTitle: @"Към играта"
+                                          otherButtonTitles: nil];
+    [alert show];
+
+  }];
+  
 }
 
 - (void)didReceiveMemoryWarning

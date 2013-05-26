@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Nikola Kotarov. All rights reserved.
 //
 
-#import "IAPHelper.m"
+#import "IAPHelper.h"
 
 @interface ColorIAPHelper : IAPHelper
 

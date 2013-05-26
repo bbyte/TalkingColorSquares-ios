@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIImageExtras.h"
 #import <StoreKit/StoreKit.h>
+
 UIKIT_EXTERN NSString *const IAPHelperProductPurchasedNotification;
 
 @interface ColorViewController : UIViewController
@@ -29,6 +30,7 @@ UIKIT_EXTERN NSString *const IAPHelperProductPurchasedNotification;
 @property (retain, nonatomic) CABasicAnimation *bumpAnimation;
 
 @property (retain, nonatomic) Network *network;
+@property (retain, nonatomic) NSArray *_products;
 
 
 - (IBAction) buttonClicked:(id)sender;
