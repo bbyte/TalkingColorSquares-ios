@@ -124,38 +124,49 @@ NSString *const IAPHelperProductPurchasedNotification = @"IAPHelperProductPurcha
   };
 }
 
-- (void)completeTransaction:(SKPaymentTransaction *)transaction {
+- (void)completeTransaction:(SKPaymentTransaction *)transaction
+{
   NSLog(@"completeTransaction...");
   
   [self provideContentForProductIdentifier:transaction.payment.productIdentifier];
   [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
 }
 
-- (void)restoreTransaction:(SKPaymentTransaction *)transaction {
+- (void)restoreTransaction:(SKPaymentTransaction *)transaction
+{
   NSLog(@"restoreTransaction...");
   
   [self provideContentForProductIdentifier:transaction.originalTransaction.payment.productIdentifier];
   [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
 }
 
-- (void)failedTransaction:(SKPaymentTransaction *)transaction {
-  
+- (void)failedTransaction:(SKPaymentTransaction *)transaction
+{
   NSLog(@"failedTransaction...");
-  if (transaction.error.code != SKErrorPaymentCancelled)
-    {
+  if (transaction.error.code != SKErrorPaymentCancelled) {
+    
     NSLog(@"Transaction error: %@", transaction.error.localizedDescription);
-    }
+  }
+  
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Проблем"
+                                                  message: transaction.error.localizedDescription
+                                                 delegate: self
+                                        cancelButtonTitle: @"Close"
+                                        otherButtonTitles: nil];
+  [alert show];
+
   
   [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 }
 
-- (void)provideContentForProductIdentifier:(NSString *)productIdentifier {
-  
+- (void)provideContentForProductIdentifier:(NSString *)productIdentifier
+{
   [_purchasedProductIdentifiers addObject:productIdentifier];
-  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:productIdentifier];
+  [[NSUserDefaults standardUserDefaults] setBool: YES forKey: productIdentifier];
   [[NSUserDefaults standardUserDefaults] synchronize];
-  [[NSNotificationCenter defaultCenter] postNotificationName:IAPHelperProductPurchasedNotification object:productIdentifier userInfo:nil];
-  
+  [[NSNotificationCenter defaultCenter] postNotificationName: IAPHelperProductPurchasedNotification
+                                                      object: productIdentifier
+                                                    userInfo: nil];
 }
 
 - (void)restoreCompletedTransactions {

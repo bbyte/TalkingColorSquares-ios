@@ -366,13 +366,25 @@ NSNumberFormatter * _priceFormatter;
   [_priceFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
   
   _products = nil;
-  SKProduct *product = [[SKProduct alloc] init];
+//  SKProduct *product = [[SKProduct alloc] init];
   
   [[ColorIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products) {
     if (success) {
-      self._products = @[(SKProduct *) @"NumbersAndColors"];
+//      self._products = @[(SKProduct *) @"com.biks.NumbersAndColors.morenumbers2"];
+      self._products = products;
     }
   }];
+  
+#ifdef MORE_NUMBERS
+  
+  self.buyButton.enabled = YES;
+  self.buyButton.hidden = NO;
+#else
+  
+  self.buyButton.enabled = NO;
+  self.buyButton.hidden = YES;
+  
+#endif
 }
 
 - (IBAction) buttonClicked:(id)sender
@@ -477,13 +489,15 @@ NSNumberFormatter * _priceFormatter;
 - (void) swipeDetect: (id) sender
 {
 
+#ifndef MORE_NUMBERS
   return;
+#endif
 //  NSLog(@"%d", self.mode);
   
   switch (self.mode) {
     case MODE_NUMBERS:
       
-//      [self selectMode: MODE_MORENUMBERS];
+     [self selectMode: MODE_MORENUMBERS];
       
       break;
       
@@ -879,20 +893,40 @@ NSNumberFormatter * _priceFormatter;
     
     if (! [[NSUserDefaults standardUserDefaults] boolForKey: @"moreNumbersPaid"]) {
       
+#ifdef NO_REAL_BUYING
+      
+      
+      [[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"moreNumbersPaid"];
+      [[NSUserDefaults standardUserDefaults] synchronize];
+      
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Ок"
+                                                      message: @"Плащането беше извършено успешно. Благодарим Ви!"
+                                                     delegate: self
+                                            cancelButtonTitle: @"Към играта"
+                                            otherButtonTitles: nil];
+      [alert show];
+      
+      SEND_EVENT_PAID_OK
+#else
+      
       NSLog(@"Products: %@", self._products);
       
       SKProduct *product = self._products[0];
+      
+      NSLog(@"Product: %@", product);
 
       
       NSLog(@"Buying %@...", product.productIdentifier);
       [[ColorIAPHelper sharedInstance] buyProduct:product];
+#endif
     }
   } else if (alertView.tag == 777 && ! buttonIndex) {
     
     SEND_EVENT_PAID_CANCEL
   } else if (alertView.tag == 777 && buttonIndex == 2) {
-    
+#ifndef NO_REAL_BUYING
     [[ColorIAPHelper sharedInstance] restoreCompletedTransactions];
+#endif
   }
 }
 

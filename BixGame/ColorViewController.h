@@ -13,6 +13,9 @@
 
 UIKIT_EXTERN NSString *const IAPHelperProductPurchasedNotification;
 
+#define MORE_NUMBERS YES
+//#define NO_REAL_BUYING YES
+
 @interface ColorViewController : UIViewController
 
 @property (retain, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
