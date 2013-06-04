@@ -11,6 +11,7 @@
 #import <StoreKit/StoreKit.h>
 
 NSString *const IAPHelperProductPurchasedNotification = @"IAPHelperProductPurchasedNotification";
+NSString *const IAPHelperPurchaseFailedNotification = @"IAPHelperPurchaseFailedNotification";
 
 // 2
 @interface IAPHelper () <SKProductsRequestDelegate>
@@ -45,6 +46,7 @@ NSString *const IAPHelperProductPurchasedNotification = @"IAPHelperProductPurcha
       }
     }
     
+    self.network = [Network sharedInstance];
   }
   return self;
 }
@@ -146,7 +148,11 @@ NSString *const IAPHelperProductPurchasedNotification = @"IAPHelperProductPurcha
   if (transaction.error.code != SKErrorPaymentCancelled) {
     
     NSLog(@"Transaction error: %@", transaction.error.localizedDescription);
+    SEND_EVENT_TRANSACTION_FAILED(transaction.error.localizedDescription)
   }
+  
+  [[NSNotificationCenter defaultCenter] postNotificationName: IAPHelperPurchaseFailedNotification
+                                                      object: nil];
   
   UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Проблем"
                                                   message: transaction.error.localizedDescription

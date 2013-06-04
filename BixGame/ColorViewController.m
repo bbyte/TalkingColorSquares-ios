@@ -36,6 +36,7 @@
 @synthesize buyButton;
 @synthesize colorArrange, colorImages;
 @synthesize _products;
+@synthesize disableView;
 
 NSNumberFormatter * _priceFormatter;
 
@@ -137,6 +138,11 @@ NSNumberFormatter * _priceFormatter;
     
     self.network = [Network sharedInstance];
 
+    UIView *dView = [[UIView alloc] init];
+    dView.alpha = 0.6f;
+    dView.backgroundColor = [UIColor grayColor];
+    
+    [self setDisableView: dView];
   }
   return self;
 }
@@ -909,6 +915,8 @@ NSNumberFormatter * _priceFormatter;
       SEND_EVENT_PAID_OK
 #else
       
+      [self showDisableView: self.view];
+      
       NSLog(@"Products: %@", self._products);
       
       SKProduct *product = self._products[0];
@@ -925,29 +933,43 @@ NSNumberFormatter * _priceFormatter;
     SEND_EVENT_PAID_CANCEL
   } else if (alertView.tag == 777 && buttonIndex == 2) {
 #ifndef NO_REAL_BUYING
+    [self showDisableView: self.view];
     [[ColorIAPHelper sharedInstance] restoreCompletedTransactions];
 #endif
   }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)productPurchased:(NSNotification *)notification {
+- (void)viewWillAppear:(BOOL)animated
+{
+  [[NSNotificationCenter defaultCenter] addObserver: self
+                                           selector: @selector(productPurchased:)
+                                               name: IAPHelperProductPurchasedNotification
+                                             object: nil];
   
-  NSString * productIdentifier = notification.object;
+  [[NSNotificationCenter defaultCenter] addObserver: self
+                                           selector: @selector(failedTransaction)
+                                               name: IAPHelperPurchaseFailedNotification
+                                             object: nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+  [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
+- (void)productPurchased:(NSNotification *)notification
+{  
+//  NSString * productIdentifier = notification.object;
+  [self hideDisableView];
+  
+  NSLog(@"Notification: %@", notification);
+  
   [_products enumerateObjectsUsingBlock:^(SKProduct * product, NSUInteger idx, BOOL *stop) {
 
     [[NSUserDefaults standardUserDefaults] setBool: YES forKey: @"moreNumbersPaid"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     SEND_EVENT_PAID_OK
-
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Ок"
                                                     message: @"Плащането беше извършено успешно. Благодарим Ви!"
@@ -959,6 +981,36 @@ NSNumberFormatter * _priceFormatter;
   }];
   
 }
+
+- (void) failedTransaction
+{
+  [self hideDisableView];
+}
+
+- (void) showDisableView: (UIView *) parentView
+{
+  UIView *dView = [self disableView];
+  
+  dView.frame = parentView.frame;
+  
+  UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] init];
+  [activity setHidesWhenStopped: YES];
+  [activity setActivityIndicatorViewStyle: UIActivityIndicatorViewStyleWhiteLarge];
+  
+  activity.center = CGPointMake(parentView.frame.size.width / 2,
+                                parentView.frame.size.height / 2);
+  
+  [activity startAnimating];
+  
+  [dView addSubview: activity];
+  [parentView addSubview: dView];
+}
+
+- (void) hideDisableView
+{
+  [[self disableView] removeFromSuperview];
+}
+
 
 - (void)didReceiveMemoryWarning
 {

@@ -9,11 +9,14 @@
 
 //#import <Foundation/Foundation.h>
 #import <StoreKit/StoreKit.h>
-UIKIT_EXTERN NSString *const IAPHelperProductPurchasedNotification;
+
+UIKIT_EXTERN NSString *const IAPHelperProductPurchasedNotification, *const IAPHelperPurchaseFailedNotification;
 
 typedef void (^RequestProductsCompletionHandler)(BOOL success, NSArray * products);
 
 @interface IAPHelper : NSObject <SKProductsRequestDelegate, SKPaymentTransactionObserver>
+
+@property (retain, nonatomic) Network *network;
 
 - (id)initWithProductIdentifiers:(NSSet *)productIdentifiers;
 - (void)requestProductsWithCompletionHandler:(RequestProductsCompletionHandler)completionHandler;

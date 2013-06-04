@@ -11,7 +11,8 @@
 #import "UIImageExtras.h"
 #import <StoreKit/StoreKit.h>
 
-UIKIT_EXTERN NSString *const IAPHelperProductPurchasedNotification;
+UIKIT_EXTERN NSString *const IAPHelperProductPurchasedNotification, *const IAPHelperPurchaseFailedNotification;
+
 
 #define MORE_NUMBERS YES
 //#define NO_REAL_BUYING YES
@@ -35,6 +36,8 @@ UIKIT_EXTERN NSString *const IAPHelperProductPurchasedNotification;
 @property (retain, nonatomic) Network *network;
 @property (retain, nonatomic) NSArray *_products;
 
+@property (retain, nonatomic) UIView *disableView;
+
 
 - (IBAction) buttonClicked:(id)sender;
 - (IBAction) selectButtonClicked:(id)sender;
@@ -52,5 +55,9 @@ UIKIT_EXTERN NSString *const IAPHelperProductPurchasedNotification;
 - (void) releaseUILock;
 
 - (BOOL) isPaid;
+
+- (void) failedTransaction;
+
+
 
 @end

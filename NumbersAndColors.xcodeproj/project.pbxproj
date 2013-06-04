@@ -91,8 +91,8 @@
 		881EF44717516F0E0058283D /* IAPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAPHelper.m; sourceTree = "<group>"; };
 		881EF449175170420058283D /* ColorIAPHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorIAPHelper.h; sourceTree = "<group>"; };
 		881EF44A175170420058283D /* ColorIAPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorIAPHelper.m; sourceTree = "<group>"; };
-		881EF452175299F70058283D /* game-2-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "game-2-72.png"; sourceTree = "<group>"; };
-		881EF45417529A660058283D /* game-2-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "game-2-144.png"; sourceTree = "<group>"; };
+		881EF452175299F70058283D /* game-2-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "game-2-72.png"; path = "../game-2-72.png"; sourceTree = "<group>"; };
+		881EF45417529A660058283D /* game-2-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "game-2-144.png"; path = "../game-2-144.png"; sourceTree = "<group>"; };
 		887976CF173441ED00935E17 /* NumbersAndColors.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NumbersAndColors.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		887976D2173441ED00935E17 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		887976D4173441ED00935E17 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -196,8 +196,6 @@
 		887976C6173441ED00935E17 = {
 			isa = PBXGroup;
 			children = (
-				881EF45417529A660058283D /* game-2-144.png */,
-				881EF452175299F70058283D /* game-2-72.png */,
 				887976D8173441ED00935E17 /* BixGame */,
 				887976D1173441ED00935E17 /* Frameworks */,
 				887976D0173441ED00935E17 /* Products */,
@@ -308,6 +306,8 @@
 		88E210F217443AF700C13E72 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				881EF45417529A660058283D /* game-2-144.png */,
+				881EF452175299F70058283D /* game-2-72.png */,
 				88F0FFD3174EC774000F29A2 /* game-2-114.png */,
 				88F0FFD1174EC768000F29A2 /* game-2-57.png */,
 				88F0FF9B174E860E000F29A2 /* Buy-button.png */,
