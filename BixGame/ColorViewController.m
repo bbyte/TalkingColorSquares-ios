@@ -157,6 +157,8 @@ NSNumberFormatter * _priceFormatter;
     }
   }
   
+  NSLog(@"%d %d %d %d %d", RAND_MAX, rand(), rand(), rand(), randrange(10 - 4));
+  
   int a[10], i, nvalues = 10;
 
   if (self.isRandom) {
@@ -168,6 +170,7 @@ NSNumberFormatter * _priceFormatter;
     
     for(i = 0; i < nvalues-1; i++) {
       int c = randrange(nvalues-i);
+      NSLog(@"randrange: %d", c);
       int t = a[i]; a[i] = a[i+c]; a[i+c] = t;	/* swap */
     }
 
@@ -637,7 +640,7 @@ NSNumberFormatter * _priceFormatter;
     }
   }
   
-  float lockTime;
+  float lockTime = 0.0;
   
   if (self.mode == MODE_NUMBERS) {
     
@@ -646,7 +649,7 @@ NSNumberFormatter * _priceFormatter;
     lockTime = 10.0f;
     
     SEND_EVENT_SONG1
-  } else {
+  } else if (self.mode == MODE_MORENUMBERS) {
     
     [self playMP3File: @"math-song"];
     

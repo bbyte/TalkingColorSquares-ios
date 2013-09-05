@@ -49,6 +49,9 @@ forKeys: @[@"callbackMessage", @"URL", @"METHOD", @"BODY"]]];
 
 //#define NETWORK_DEBUG YES
 
+// do not spam the activity log
+#define NO_NETWORK
+
 
 @interface Network : NSObject <NSURLConnectionDataDelegate>
 

@@ -53,6 +53,9 @@
   NSLog(@"Taskdata: %@", taskData);
 #endif
 
+#ifdef NO_NETWORK
+  return;
+#endif
   
   self.callbackMessage = [taskData objectForKey: @"callbackMessage"];
   
